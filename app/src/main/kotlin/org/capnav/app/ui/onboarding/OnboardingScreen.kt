@@ -38,7 +38,15 @@ fun OnboardingScreen(vm: CapViewModel, onRequestPermissions: () -> Unit) {
             Modifier.safeDrawingPadding().verticalScroll(rememberScrollState()).padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            Text(stringResource(R.string.app_name), style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.primary)
+            Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                androidx.compose.foundation.Image(
+                    painter = androidx.compose.ui.res.painterResource(R.drawable.ic_logo),
+                    contentDescription = null,
+                    modifier = Modifier.size(72.dp),
+                )
+                Spacer(Modifier.width(16.dp))
+                Text(stringResource(R.string.app_name), style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.primary)
+            }
             Text(stringResource(R.string.onboarding_lead), style = MaterialTheme.typography.titleMedium)
             Point(Icons.Outlined.NoAccounts, R.string.ob_no_account_title, R.string.ob_no_account)
             Point(Icons.Outlined.Lock, R.string.ob_local_title, R.string.ob_local)

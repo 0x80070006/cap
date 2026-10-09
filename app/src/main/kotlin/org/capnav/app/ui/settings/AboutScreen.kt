@@ -41,6 +41,11 @@ fun AboutScreen(vm: CapViewModel) {
         Column(Modifier.statusBarsPadding().navigationBarsPadding()) {
             ScreenHeader(stringResource(R.string.about_licenses), onBack = { vm.screen = Screen.SETTINGS })
             Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)) {
+                androidx.compose.foundation.Image(
+                    painter = androidx.compose.ui.res.painterResource(R.drawable.ic_logo),
+                    contentDescription = null,
+                    modifier = Modifier.size(80.dp).padding(bottom = 8.dp),
+                )
                 Text("${stringResource(R.string.app_name)} ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.titleLarge)
                 Text(stringResource(R.string.about_body), style = MaterialTheme.typography.bodyMedium)
                 Spacer(Modifier.size(8.dp))

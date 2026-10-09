@@ -83,7 +83,7 @@ class NavigationService : LifecycleService() {
             this, req, Intent(this, NavigationService::class.java).setAction(a), PendingIntent.FLAG_IMMUTABLE,
         )
         return NotificationCompat.Builder(this, CHANNEL)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(text)
             .setOngoing(true)

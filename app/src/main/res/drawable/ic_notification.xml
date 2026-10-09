@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Status-bar icon: the logo's "C" ring and arrow. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <group
+        android:scaleX="0.0316"
+        android:scaleY="0.0316"
+        android:translateX="-7.8"
+        android:translateY="-4.6">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M944,379 A360,360 0 1,0 944,671 L843,627 A250,250 0 1,1 843,423 Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M641,358 Q648,350 655,358 L662,368 L746,650 Q745,665 733,660 L612,570 L462,622 Q450,620 455,610 Z" />
+    </group>
+</vector>

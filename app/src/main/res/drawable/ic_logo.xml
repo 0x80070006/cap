@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Cap logo: a "C" ring with a navigation arrow and a winding road, cyan land on the left, purple
-  on the right. Drawn in the 1254 px source space, scaled into the 108 dp adaptive-icon canvas.
--->
+<!-- In-app logo (rounded square), same artwork as the launcher icon. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <group
-        android:scaleX="0.0574"
-        android:translateX="18"
-        android:translateY="18"
-        android:scaleY="0.0574">
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="1254"
+    android:viewportHeight="1254">
+    <group>
+        <clip-path android:pathData="M250,0 H1004 A250,250 0 0 1 1254,250 V1004 A250,250 0 0 1 1004,1254 H250 A250,250 0 0 1 0,1004 V250 A250,250 0 0 1 250,0 Z" />
+        <path android:pathData="M0,0h1254v1254h-1254z">
+            <aapt:attr name="android:fillColor">
+                <gradient android:type="linear" android:startX="627" android:startY="0" android:endX="627" android:endY="1254"
+                    android:startColor="#FF4271F5" android:endColor="#FF3556EE" />
+            </aapt:attr>
+        </path>
 
         <!-- Left land: light band, then cyan field -->
         <path

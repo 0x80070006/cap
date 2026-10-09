@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Themed-icon silhouette: the "C" ring and the arrow only. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="0.0574"
+        android:translateX="18"
+        android:translateY="18"
+        android:scaleY="0.0574">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M944,379 A360,360 0 1,0 944,671 L843,627 A250,250 0 1,1 843,423 Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M641,358 Q648,350 655,358 L662,368 L746,650 Q745,665 733,660 L612,570 L462,622 Q450,620 455,610 Z" />
+    </group>
+</vector>
