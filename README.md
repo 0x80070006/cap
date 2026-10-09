@@ -1,9 +1,13 @@
 <img src="docs/media/logo.png" alt="" width="96" align="right">
-**EN DEV ACTIF**
-*Peut contenir des bugs*
+
 
 
 # Cap — GPS libre, privé par conception
+
+
+## EN DEV ACTIF
+* Peut contenir des bugs *
+
 
 Application de navigation Android **open source** (GPL-3.0-or-later) inspirée de l'ergonomie de Waze, **sans compte, sans pistage, sans publicité et sans Google Play Services**. Les alertes que vous signalez restent **uniquement sur votre téléphone**, chiffrées, et ne sont jamais partagées.
 
