@@ -30,7 +30,7 @@ interface LocationProvider {
  */
 class NativeLocationProvider(context: Context) : LocationProvider {
     private val lm = context.getSystemService(LocationManager::class.java)
-    private val mainExecutor = context.mainExecutor
+    private val mainExecutor = androidx.core.content.ContextCompat.getMainExecutor(context)
 
     @SuppressLint("MissingPermission")
     override fun locationUpdates(profile: LocationProfile): Flow<Fix> = callbackFlow {

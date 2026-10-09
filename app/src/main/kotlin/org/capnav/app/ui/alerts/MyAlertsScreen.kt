@@ -74,6 +74,8 @@ import kotlin.math.roundToInt
 
 private enum class Sort { DATE, DISTANCE, TYPE }
 
+private fun passesLabel(n: Int) = "${n}×"
+
 private sealed interface PasswordAction {
     data class Export(val uri: android.net.Uri) : PasswordAction
     data class Import(val uri: android.net.Uri) : PasswordAction
@@ -102,13 +104,15 @@ fun MyAlertsScreen(vm: CapViewModel) {
         if (uri != null) passwordFor = PasswordAction.Import(uri)
     }
 
-    val visible = remember(alerts, filter, sort, search, fix) {
+    val typeLabels = AlertType.entries.associateWith { stringResource(it.visual().label).lowercase() }
+    val subLabels = AlertType.entries.flatMap { it.subtypes }.distinct().associateWith { stringResource(subtypeLabel(it)).lowercase() }
+    val visible = remember(alerts, filter, sort, search, fix, typeLabels) {
         val q = search.trim().lowercase()
         alerts.filter { filter == null || it.type == filter }
             .filter { a ->
-                q.isEmpty() || context.getString(a.type.visual().label).lowercase().contains(q) ||
+                q.isEmpty() || typeLabels.getValue(a.type).contains(q) ||
                     a.note.orEmpty().lowercase().contains(q) ||
-                    (a.subtype?.let { context.getString(subtypeLabel(it)).lowercase().contains(q) } ?: false)
+                    (a.subtype?.let { subLabels[it]?.contains(q) } ?: false)
             }
             .let { list ->
                 when (sort) {
@@ -193,7 +197,7 @@ fun MyAlertsScreen(vm: CapViewModel) {
                             val meta = buildList {
                                 add(Format.date(a.createdAt))
                                 fix?.let { add(Format.distance(Geo.distanceM(it.point, a.point), settings.units)) }
-                                if (a.passes > 1) add(context.getString(R.string.passes_n, a.passes))
+                                if (a.passes > 1) add(passesLabel(a.passes))
                             }.joinToString(" · ")
                             Text(meta, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             a.note?.let { Text(it, style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis) }

@@ -166,7 +166,6 @@
     <string name="personal_alert_local">Personal alert · stored only on this device</string>
     <string name="created_on">Created</string>
     <string name="passes">Times reported</string>
-    <string name="passes_n">%1$d×</string>
     <string name="send_to_osm">Send to OpenStreetMap</string>
     <string name="osm_preview_intro">Exactly this will be sent, without an account, as a public note:</string>
     <string name="osm_public_warning">OpenStreetMap notes are public. Your alert stays on your device either way.</string>

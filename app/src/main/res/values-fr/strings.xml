@@ -168,7 +168,6 @@
     <string name="personal_alert_local">Alerte personnelle · stockée uniquement sur cet appareil</string>
     <string name="created_on">Créée le</string>
     <string name="passes">Signalements</string>
-    <string name="passes_n">%1$d×</string>
     <string name="send_to_osm">Envoyer à OpenStreetMap</string>
     <string name="osm_preview_intro">Exactement ceci sera envoyé, sans compte, comme note publique :</string>
     <string name="osm_public_warning">Les notes OpenStreetMap sont publiques. Votre alerte reste sur votre appareil dans tous les cas.</string>

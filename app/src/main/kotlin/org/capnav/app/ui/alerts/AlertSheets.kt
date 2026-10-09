@@ -201,6 +201,7 @@ private fun RoadsideHelpDialog(vm: CapViewModel, alert: PersonalAlert) {
     val context = LocalContext.current
     val lat = String.format(Locale.ROOT, "%.5f", alert.point.lat)
     val lon = String.format(Locale.ROOT, "%.5f", alert.point.lon)
+    val smsBody = stringResource(R.string.help_sms, "$lat,$lon", "https://www.openstreetmap.org/?mlat=$lat&mlon=$lon#map=17/$lat/$lon")
     AlertDialog(
         onDismissRequest = { vm.roadsideHelp = null },
         title = { Text(stringResource(R.string.alert_roadside_help)) },
@@ -211,8 +212,7 @@ private fun RoadsideHelpDialog(vm: CapViewModel, alert: PersonalAlert) {
                     context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:112")))
                 }, Modifier.fillMaxWidth(), icon = Icons.Outlined.Call)
                 SecondaryButton(stringResource(R.string.send_position), {
-                    val body = context.getString(R.string.help_sms, "$lat,$lon", "https://www.openstreetmap.org/?mlat=$lat&mlon=$lon#map=17/$lat/$lon")
-                    context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:")).putExtra("sms_body", body))
+                    context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:")).putExtra("sms_body", smsBody))
                 }, Modifier.fillMaxWidth(), Icons.Outlined.Sms)
             }
         },
