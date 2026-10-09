@@ -1,0 +1,19 @@
+# Changelog
+
+## [0.1.0] — 2026-10-09
+
+Première version publique (phases 0 et 1 du plan, plus une partie de la phase 2).
+
+### Ajouté
+- Carte MapLibre (OpenFreeMap), thèmes jour/nuit, eau bleue / espaces verts / bâtiments gris.
+- Position GNSS native, curseur bleu orienté, bouton de recalibrage (sens de marche / nord en haut).
+- Recherche Photon avec autocomplétion, catégories, historique ; coordonnées résolues localement.
+- Favoris Maison / Travail / personnalisés avec nom et icône personnalisables.
+- Prévisualisation de 1 à 3 itinéraires Valhalla, options, étapes réordonnables, liste des manœuvres.
+- Machine d'états du trajet (Idle, Previewing, Navigating, Paused, Rerouting, Error, Finished) persistée et chiffrée.
+- Guidage virage par virage, voix TTS locale, recalcul sur déviation avec hystérésis, service de premier plan.
+- Ajout d'un arrêt en route avec détour estimé, saut/suppression/réordonnancement d'étapes.
+- Pause / reprise / arrêt annulable, résumé de fin.
+- Alertes personnelles locales : 12 catégories + radars/travaux, anti-doublon 30 m, opacité réduite permanente, rappels d'approche, « Mes alertes », export/import chiffrés, note OSM manuelle.
+- Règles légales par pays, tableau de bord Vie privée avec journal réseau, « Tout effacer ».
+- 36 tests unitaires (machine d'états, géométrie, alertes et non-fuite réseau, contrastes WCAG, parseurs).

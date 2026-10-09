@@ -1,0 +1,44 @@
+# Self-hosted routing + search for Cap (see docs/SELF_HOSTING.md). Not yet validated end to end.
+services:
+  valhalla:
+    image: ghcr.io/gis-ops/docker-valhalla/valhalla:latest
+    restart: unless-stopped
+    environment:
+      tile_urls: ${REGION_PBF_URL}
+      serve_tiles: "True"
+      build_admins: "True"
+      build_time_zones: "True"
+      server_threads: "4"
+    volumes:
+      - valhalla-data:/custom_files
+    expose: ["8002"]
+    read_only: false
+    security_opt: ["no-new-privileges:true"]
+
+  photon:
+    image: rtuszik/photon-docker:latest
+    restart: unless-stopped
+    environment:
+      COUNTRY_CODE: ${PHOTON_COUNTRY}
+      UPDATE_STRATEGY: SEQUENTIAL
+    volumes:
+      - photon-data:/photon/photon_data
+    expose: ["2322"]
+    security_opt: ["no-new-privileges:true"]
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on: [valhalla, photon]
+    security_opt: ["no-new-privileges:true"]
+
+volumes:
+  valhalla-data:
+  photon-data:
+  caddy-data:

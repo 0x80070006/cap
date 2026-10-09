@@ -1,0 +1,29 @@
+# No access logs: no IP address or query (destination) is ever written to disk.
+{
+	log default {
+		output discard
+	}
+}
+
+(hardening) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		Content-Security-Policy "default-src 'none'"
+		-Server
+	}
+	request_body {
+		max_size 64KB
+	}
+}
+
+route.{$DOMAIN} {
+	import hardening
+	reverse_proxy valhalla:8002
+}
+
+search.{$DOMAIN} {
+	import hardening
+	reverse_proxy photon:2322
+}

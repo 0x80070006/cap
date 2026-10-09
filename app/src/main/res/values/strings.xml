@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Cap</string>
+
+    <!-- General -->
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="save">Save</string>
+    <string name="skip">Skip</string>
+    <string name="send">Send</string>
+    <string name="delete">Delete</string>
+    <string name="undo">Undo</string>
+    <string name="remove">Remove</string>
+    <string name="retry">Retry</string>
+    <string name="clear">Clear</string>
+    <string name="more">More</string>
+    <string name="less">Less</string>
+    <string name="details">Details</string>
+    <string name="select_all">Select all</string>
+    <string name="move_up">Move up</string>
+    <string name="move_down">Move down</string>
+
+    <!-- Map -->
+    <string name="where_to">Where to?</string>
+    <string name="home">Home</string>
+    <string name="work">Work</string>
+    <string name="favorite">Favourite</string>
+    <string name="favorites">Favourites</string>
+    <string name="recents">Recent</string>
+    <string name="set_home">Set as home</string>
+    <string name="set_work">Set as work</string>
+    <string name="saved_favorite">Saved to favourites</string>
+    <string name="recenter">Recenter</string>
+    <string name="report">Report</string>
+    <string name="report_here">Report here</string>
+    <string name="settings">Settings</string>
+    <string name="my_alerts">My alerts</string>
+    <string name="show_alerts">Show my alerts</string>
+    <string name="hide_alerts">Hide my alerts</string>
+    <string name="dropped_pin">Selected point</string>
+    <string name="directions">Directions</string>
+    <string name="computing_route">Computing route…</string>
+    <string name="location_missing">Location is off. Allow precise location to navigate.</string>
+    <string name="no_position">Your position is not known yet.</string>
+
+    <!-- Search -->
+    <string name="search">Search</string>
+    <string name="search_hint">Address, place, or 48.85, 2.35</string>
+    <string name="search_error">Search failed. Check your connection or server settings.</string>
+    <string name="no_results">No results</string>
+    <string name="search_address">Search an address</string>
+    <string name="search_privacy_hint">Typed text and your position rounded to about 1 km are sent to the geocoding server. Coordinates are resolved on the device.</string>
+    <string name="poi_fuel">Fuel</string>
+    <string name="poi_charging">Charging</string>
+    <string name="poi_parking">Parking</string>
+    <string name="poi_cafe">Café</string>
+    <string name="poi_toilets">Toilets</string>
+    <string name="poi_pharmacy">Pharmacy</string>
+    <string name="poi_restaurant">Restaurant</string>
+
+    <!-- Route preview -->
+    <string name="route_error">No route could be computed.</string>
+    <string name="distance_eta">%1$s · arrive %2$s</string>
+    <string name="traffic_unavailable">Live traffic: not available on this server (durations use typical speeds).</string>
+    <string name="alternatives">Routes</string>
+    <string name="fastest">Fastest</string>
+    <string name="alternative">Alternative</string>
+    <string name="tag_toll">Tolls</string>
+    <string name="tag_highway">Motorway</string>
+    <string name="tag_ferry">Ferry</string>
+    <string name="stops">Stops</string>
+    <string name="stop_n">Stop %1$d</string>
+    <string name="destination">Destination</string>
+    <string name="add_stop">Add a stop</string>
+    <string name="route_options">Route options</string>
+    <string name="avoid_tolls">Avoid tolls</string>
+    <string name="avoid_highways">Avoid motorways</string>
+    <string name="avoid_ferries">Avoid ferries</string>
+    <string name="avoid_unpaved">Avoid unpaved roads</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="vehicle_car">Car</string>
+    <string name="vehicle_moto">Motorcycle</string>
+    <string name="vehicle_truck">Van / truck</string>
+    <string name="vehicle_bike">Bicycle</string>
+    <string name="vehicle_walk">On foot</string>
+    <string name="maneuvers">Directions list</string>
+    <string name="start">Start</string>
+
+    <!-- Driving -->
+    <string name="then">Then</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="stop">Stop</string>
+    <string name="mute">Mute voice</string>
+    <string name="unmute">Unmute voice</string>
+    <string name="trip_paused">Trip paused</string>
+    <string name="trip_paused_hint">Voice and rerouting are suspended. Your route is kept.</string>
+    <string name="rerouting">Recalculating…</string>
+    <string name="reroute_failed">Could not recalculate the route</string>
+    <string name="stopping_in">Stopping trip in %1$d s</string>
+    <string name="skip_next_stop">Skip next stop</string>
+    <string name="trip_started_at">Started at %1$s · %2$s driven</string>
+    <string name="add_stop_hint">Results near your route, sorted by extra time.</string>
+    <string name="no_results_along_route">Nothing found near the route.</string>
+    <string name="detour_min">+%1$d min</string>
+    <string name="stop_added">Stop added: %1$s</string>
+    <string name="waypoint_reached">Stop reached: %1$s</string>
+    <string name="reported_by_you">Reported by you on %1$s · in %2$s</string>
+    <string name="delete_this_alert">Delete this alert</string>
+
+    <!-- Summary -->
+    <string name="arrived">You have arrived</string>
+    <string name="trip_ended">Trip ended</string>
+    <string name="actual_duration">Actual</string>
+    <string name="estimated_duration">Estimated</string>
+    <string name="distance">Distance</string>
+    <string name="later_than_estimate">%1$s longer than estimated</string>
+    <string name="earlier_than_estimate">%1$s shorter than estimated</string>
+    <string name="save_as_favorite">Save destination as favourite</string>
+
+    <!-- Voice -->
+    <string name="voice_in_distance">In %1$s, %2$s</string>
+    <string name="voice_reminder">%1$s reported by you ahead</string>
+    <string name="voice_arrived">You have arrived at your destination.</string>
+    <plurals name="voice_m">
+        <item quantity="one">%d metre</item>
+        <item quantity="other">%d metres</item>
+    </plurals>
+    <plurals name="voice_km">
+        <item quantity="one">%d kilometre</item>
+        <item quantity="other">%d kilometres</item>
+    </plurals>
+    <plurals name="voice_ft">
+        <item quantity="one">%d foot</item>
+        <item quantity="other">%d feet</item>
+    </plurals>
+    <plurals name="voice_mi">
+        <item quantity="one">%d mile</item>
+        <item quantity="other">%d miles</item>
+    </plurals>
+
+    <!-- Notifications -->
+    <string name="notif_channel">Navigation</string>
+    <string name="notif_starting">Starting guidance…</string>
+    <string name="notif_eta">%1$s left · arrive %2$s</string>
+
+    <!-- Alerts -->
+    <string name="what_do_you_see">What do you see?</string>
+    <string name="alerts_stay_local">Saved only on this phone, visible only to you.</string>
+    <string name="more_types">More types</string>
+    <string name="main_categories">Main categories</string>
+    <string name="not_allowed_short">Not allowed here</string>
+    <string name="not_allowed_country">This alert type is disabled under the rules of the selected country.</string>
+    <string name="alert_saved">Alert saved: %1$s</string>
+    <string name="alert_merged">Added one more pass to your existing alert</string>
+    <string name="refine_optional">Refine (optional)</string>
+    <string name="duplicate_title">Already reported here</string>
+    <string name="duplicate_text">You reported “%1$s” within 30 m on %2$s.</string>
+    <string name="merge">Merge</string>
+    <string name="create_anyway">Create anyway</string>
+    <string name="note">Note</string>
+    <string name="place_name">Place name</string>
+    <string name="edit_note">Edit note</string>
+    <string name="personal_alert_local">Personal alert · stored only on this device</string>
+    <string name="created_on">Created</string>
+    <string name="passes">Times reported</string>
+    <string name="passes_n">%1$d×</string>
+    <string name="send_to_osm">Send to OpenStreetMap</string>
+    <string name="osm_preview_intro">Exactly this will be sent, without an account, as a public note:</string>
+    <string name="osm_public_warning">OpenStreetMap notes are public. Your alert stays on your device either way.</string>
+    <string name="osm_sent">Note sent to OpenStreetMap</string>
+    <string name="osm_failed">Could not send the note</string>
+    <string name="roadside_disclaimer">Cap does not replace emergency services and cannot guarantee help. In danger, call the emergency number.</string>
+    <string name="call_emergency">Call 112</string>
+    <string name="send_position">Send my position to someone</string>
+    <string name="help_sms">I need help on the road. My position: %1$s %2$s</string>
+    <plurals name="alerts_deleted">
+        <item quantity="one">%d alert deleted</item>
+        <item quantity="other">%d alerts deleted</item>
+    </plurals>
+
+    <string name="alert_traffic_jam">Traffic jam</string>
+    <string name="alert_police">Police</string>
+    <string name="alert_accident">Crash</string>
+    <string name="alert_hazard">Hazard</string>
+    <string name="alert_road_closed">Road closed</string>
+    <string name="alert_lane_blocked">Lane blocked</string>
+    <string name="alert_map_issue">Map issue</string>
+    <string name="alert_bad_weather">Bad weather</string>
+    <string name="alert_fuel_price">Fuel price</string>
+    <string name="alert_roadside_help">Roadside help</string>
+    <string name="alert_map_note">Map note</string>
+    <string name="alert_place">Place</string>
+    <string name="alert_roadworks">Roadworks</string>
+    <string name="alert_speed_camera">Speed camera</string>
+
+    <string name="sub_moderate">Moderate</string>
+    <string name="sub_heavy">Heavy</string>
+    <string name="sub_standstill">Standstill</string>
+    <string name="sub_visible">Visible</string>
+    <string name="sub_hidden">Hidden</string>
+    <string name="sub_my_side">My side</string>
+    <string name="sub_other_side">Other side</string>
+    <string name="sub_minor">Minor</string>
+    <string name="sub_major">Major</string>
+    <string name="sub_object">Object on road</string>
+    <string name="sub_pothole">Pothole</string>
+    <string name="sub_stopped_vehicle">Stopped vehicle</string>
+    <string name="sub_animal">Animal</string>
+    <string name="sub_fog">Fog</string>
+    <string name="sub_ice">Ice</string>
+    <string name="sub_slippery">Slippery road</string>
+    <string name="sub_lights_out">Traffic lights out</string>
+    <string name="sub_works">Works</string>
+    <string name="sub_accident">Crash</string>
+    <string name="sub_event">Event</string>
+    <string name="sub_left">Left lane</string>
+    <string name="sub_center">Centre lane</string>
+    <string name="sub_right">Right lane</string>
+    <string name="sub_address">Wrong address</string>
+    <string name="sub_missing_road">Missing road</string>
+    <string name="sub_wrong_oneway">Wrong one-way</string>
+    <string name="sub_wrong_turn">Wrong turn restriction</string>
+    <string name="sub_wrong_speed">Wrong speed limit</string>
+    <string name="sub_place_closed">Place closed</string>
+    <string name="sub_rain">Heavy rain</string>
+    <string name="sub_storm">Storm</string>
+    <string name="sub_hail">Hail</string>
+    <string name="sub_snow">Snow</string>
+    <string name="sub_wind">Strong wind</string>
+    <string name="sub_flood">Flooding</string>
+    <string name="sub_breakdown">Breakdown</string>
+    <string name="sub_assistance">Needs assistance</string>
+    <string name="sub_fixed">Fixed</string>
+    <string name="sub_mobile">Mobile</string>
+    <string name="sub_other">Other</string>
+
+    <!-- My alerts -->
+    <string name="alerts">Alerts</string>
+    <string name="display">Display</string>
+    <string name="alert_opacity">Marker opacity: %1$d %%</string>
+    <string name="approach_reminders">Remind me when approaching</string>
+    <string name="show_alerts_on_map">Show my alerts on the map</string>
+    <string name="search_alerts">Search my alerts</string>
+    <string name="sort_date">Newest</string>
+    <string name="sort_distance">Nearest</string>
+    <string name="sort_type">Type</string>
+    <string name="all_types">All</string>
+    <string name="no_alerts_yet">No alerts yet. Use the report button to remember a problem spot.</string>
+    <string name="no_matching_alerts">No alert matches.</string>
+    <string name="delete_n">Delete (%1$d)</string>
+    <string name="delete_all_of_type">Delete all of a type</string>
+    <string name="delete_all">Delete all</string>
+    <string name="confirm_delete_title">Delete alerts?</string>
+    <string name="confirm_delete_text">%1$d alerts will be permanently erased from this device.</string>
+    <string name="export_alerts">Export (encrypted)</string>
+    <string name="import_alerts">Import</string>
+    <string name="export_explain">The file is encrypted with this password (at least 8 characters). Without it, the file cannot be read.</string>
+    <string name="import_explain">Enter the password used when exporting.</string>
+    <string name="password">Password</string>
+    <string name="password_confirm">Confirm password</string>
+    <string name="export_done">Alerts exported</string>
+    <string name="export_failed">Export failed</string>
+    <string name="import_failed">Import failed: wrong password or invalid file</string>
+    <plurals name="import_done">
+        <item quantity="one">%d alert imported</item>
+        <item quantity="other">%d alerts imported</item>
+    </plurals>
+
+    <!-- Settings -->
+    <string name="theme_auto">Automatic</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="high_contrast">High contrast</string>
+    <string name="accessible_traffic">Colour-blind friendly traffic colours</string>
+    <string name="report_button_left">Report button on the left</string>
+    <string name="units_metric">Kilometres</string>
+    <string name="units_imperial">Miles</string>
+    <string name="voice">Voice</string>
+    <string name="voice_guidance">Voice guidance</string>
+    <string name="voice_local_only">Uses the on-device text-to-speech engine only.</string>
+    <string name="hidden_on_map">Hidden on the map</string>
+    <string name="no_reminder_for">No approach reminder for</string>
+    <string name="country_rules">Country rules</string>
+    <string name="country_rules_hint">Some countries forbid warning about speed cameras or police checks. Choose where you drive.</string>
+    <string name="servers">Servers</string>
+    <string name="servers_hint">Defaults are free public demo servers. Self-host (docs/SELF_HOSTING.md) for heavy or private use.</string>
+    <string name="server_routing">Routing (Valhalla)</string>
+    <string name="server_geocoder">Search (Photon)</string>
+    <string name="server_style_day">Map style (day)</string>
+    <string name="server_style_night">Map style (night)</string>
+    <string name="https_required">HTTPS address required</string>
+    <string name="restore_defaults">Restore defaults</string>
+    <string name="about">About</string>
+    <string name="about_licenses">About and licences</string>
+    <string name="about_body">Free and open-source navigation. No account, no tracking, no ads. Licence GPL-3.0-or-later.</string>
+    <string name="licenses">Licences and data</string>
+    <string name="disclaimer">Disclaimer</string>
+    <string name="disclaimer_body">Cap is an independent project, not affiliated with Waze or Google. Always follow road signs and traffic law; guidance can be wrong.</string>
+
+    <!-- Privacy -->
+    <string name="privacy_dashboard">Privacy dashboard</string>
+    <string name="stays_on_device">Stays on this device</string>
+    <string name="stays_on_device_body">Encrypted with a key held by Android Keystore. Never backed up to the cloud, never synchronised.</string>
+    <string name="leaves_device">Leaves the device</string>
+    <string name="flow_search">Search: typed text, position rounded to ~1 km</string>
+    <string name="flow_routing">Routes: start, stops and destination</string>
+    <string name="flow_tiles">Map: the area displayed (map tiles)</string>
+    <string name="flow_osm">OpenStreetMap note: only when you send one</string>
+    <string name="never_sent">Never sent: your personal alerts, favourites, history, trips, identifiers.</string>
+    <string name="network_journal">Network journal</string>
+    <string name="journal_empty">Nothing has left the device yet.</string>
+    <string name="requests_bytes">%1$d req. · ↑%2$d KB ↓%3$d KB</string>
+    <string name="purpose_geocoding">Search</string>
+    <string name="purpose_routing">Routing</string>
+    <string name="purpose_poi">Stops along route</string>
+    <string name="purpose_tiles">Map tiles</string>
+    <string name="purpose_osm">OpenStreetMap note</string>
+    <string name="clear_journal">Clear the journal</string>
+    <string name="clear_recents">Clear search history</string>
+    <string name="erase_everything">Erase everything</string>
+    <string name="erase_everything_text">All alerts, favourites, history, settings and the encryption key will be destroyed. This cannot be undone.</string>
+    <string name="erase">Erase</string>
+    <string name="everything_erased">Everything has been erased</string>
+    <string name="diagnostics">Local diagnostics</string>
+    <string name="trip_transitions">Trip state transitions</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_lead">Turn-by-turn navigation that respects you.</string>
+    <string name="ob_no_account_title">No account</string>
+    <string name="ob_no_account">No sign-up, no identifier, no ads, no trackers.</string>
+    <string name="ob_local_title">Your alerts stay yours</string>
+    <string name="ob_local">Spots you report are stored encrypted on this phone only and are never shared.</string>
+    <string name="ob_location_title">Precise location</string>
+    <string name="ob_location">Used to show your position and guide you. In the background only during an active trip.</string>
+    <string name="ob_notif_title">Notifications</string>
+    <string name="ob_notif">Shows the next turn and Pause / Stop while the screen is off.</string>
+    <string name="ob_servers_title">Open servers</string>
+    <string name="ob_servers">Maps, search and routes come from OpenStreetMap-based public demo servers. You can switch to your own server in Settings.</string>
+    <string name="ob_continue">Continue</string>
+    <string name="reorient">Point the map in my direction of travel</string>
+    <string name="north_up">North up</string>
+    <string name="favorites_hint">Save addresses you use often, with your own name and icon. Stored encrypted on this device only.</string>
+    <string name="no_favorites">No favourites yet.</string>
+    <string name="add_favorite">Add a favourite</string>
+    <string name="edit_favorite">Edit favourite</string>
+    <string name="delete_favorite_title">Delete this favourite?</string>
+    <string name="favorite_name">Name</string>
+    <string name="icon">Icon</string>
+    <string name="other">Other</string>
+    <string name="edit">Edit</string>
+    <string name="manage_favorites">Favourites</string>
+</resources>

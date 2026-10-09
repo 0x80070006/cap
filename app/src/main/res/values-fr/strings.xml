@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Général -->
+    <string name="back">Retour</string>
+    <string name="close">Fermer</string>
+    <string name="cancel">Annuler</string>
+    <string name="ok">OK</string>
+    <string name="save">Enregistrer</string>
+    <string name="skip">Passer</string>
+    <string name="send">Envoyer</string>
+    <string name="delete">Supprimer</string>
+    <string name="undo">Annuler</string>
+    <string name="remove">Retirer</string>
+    <string name="retry">Réessayer</string>
+    <string name="clear">Effacer</string>
+    <string name="more">Plus</string>
+    <string name="less">Moins</string>
+    <string name="details">Détails</string>
+    <string name="select_all">Tout sélectionner</string>
+    <string name="move_up">Monter</string>
+    <string name="move_down">Descendre</string>
+
+    <!-- Carte -->
+    <string name="where_to">Où allez-vous ?</string>
+    <string name="home">Maison</string>
+    <string name="work">Travail</string>
+    <string name="favorite">Favori</string>
+    <string name="favorites">Favoris</string>
+    <string name="recents">Récents</string>
+    <string name="set_home">Définir Maison</string>
+    <string name="set_work">Définir Travail</string>
+    <string name="saved_favorite">Ajouté aux favoris</string>
+    <string name="recenter">Recentrer</string>
+    <string name="report">Signaler</string>
+    <string name="report_here">Signaler ici</string>
+    <string name="settings">Paramètres</string>
+    <string name="my_alerts">Mes alertes</string>
+    <string name="show_alerts">Afficher mes alertes</string>
+    <string name="hide_alerts">Masquer mes alertes</string>
+    <string name="dropped_pin">Point sélectionné</string>
+    <string name="directions">Itinéraire</string>
+    <string name="computing_route">Calcul de l’itinéraire…</string>
+    <string name="location_missing">Localisation désactivée. Autorisez la position précise pour naviguer.</string>
+    <string name="no_position">Votre position n’est pas encore connue.</string>
+
+    <!-- Recherche -->
+    <string name="search">Recherche</string>
+    <string name="search_hint">Adresse, lieu ou 48.85, 2.35</string>
+    <string name="search_error">La recherche a échoué. Vérifiez la connexion ou le serveur.</string>
+    <string name="no_results">Aucun résultat</string>
+    <string name="search_address">Rechercher une adresse</string>
+    <string name="search_privacy_hint">Le texte saisi et votre position arrondie à environ 1 km sont envoyés au serveur de recherche. Les coordonnées sont résolues sur l’appareil.</string>
+    <string name="poi_fuel">Carburant</string>
+    <string name="poi_charging">Recharge</string>
+    <string name="poi_parking">Parking</string>
+    <string name="poi_cafe">Café</string>
+    <string name="poi_toilets">Toilettes</string>
+    <string name="poi_pharmacy">Pharmacie</string>
+    <string name="poi_restaurant">Restaurant</string>
+
+    <!-- Prévisualisation -->
+    <string name="route_error">Impossible de calculer un itinéraire.</string>
+    <string name="distance_eta">%1$s · arrivée %2$s</string>
+    <string name="traffic_unavailable">Trafic en direct : non disponible sur ce serveur (durées calculées sur des vitesses habituelles).</string>
+    <string name="alternatives">Itinéraires</string>
+    <string name="fastest">Le plus rapide</string>
+    <string name="alternative">Alternative</string>
+    <string name="tag_toll">Péages</string>
+    <string name="tag_highway">Autoroute</string>
+    <string name="tag_ferry">Ferry</string>
+    <string name="stops">Étapes</string>
+    <string name="stop_n">Étape %1$d</string>
+    <string name="destination">Destination</string>
+    <string name="add_stop">Ajouter un arrêt</string>
+    <string name="route_options">Options d’itinéraire</string>
+    <string name="avoid_tolls">Éviter les péages</string>
+    <string name="avoid_highways">Éviter les autoroutes</string>
+    <string name="avoid_ferries">Éviter les ferries</string>
+    <string name="avoid_unpaved">Éviter les routes non goudronnées</string>
+    <string name="vehicle">Véhicule</string>
+    <string name="vehicle_car">Voiture</string>
+    <string name="vehicle_moto">Moto</string>
+    <string name="vehicle_truck">Utilitaire</string>
+    <string name="vehicle_bike">Vélo</string>
+    <string name="vehicle_walk">À pied</string>
+    <string name="maneuvers">Liste des manœuvres</string>
+    <string name="start">Démarrer</string>
+
+    <!-- Navigation -->
+    <string name="then">Puis</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Reprendre</string>
+    <string name="stop">Arrêter</string>
+    <string name="mute">Couper la voix</string>
+    <string name="unmute">Activer la voix</string>
+    <string name="trip_paused">Trajet en pause</string>
+    <string name="trip_paused_hint">Voix et recalcul suspendus. Votre trajet est conservé.</string>
+    <string name="rerouting">Recalcul en cours…</string>
+    <string name="reroute_failed">Impossible de recalculer l’itinéraire</string>
+    <string name="stopping_in">Arrêt du trajet dans %1$d s</string>
+    <string name="skip_next_stop">Passer à l’étape suivante</string>
+    <string name="trip_started_at">Parti à %1$s · %2$s parcourus</string>
+    <string name="add_stop_hint">Résultats proches de votre itinéraire, triés par détour.</string>
+    <string name="no_results_along_route">Rien trouvé près de l’itinéraire.</string>
+    <string name="detour_min">+%1$d min</string>
+    <string name="stop_added">Arrêt ajouté : %1$s</string>
+    <string name="waypoint_reached">Étape atteinte : %1$s</string>
+    <string name="reported_by_you">Signalé par vous le %1$s · dans %2$s</string>
+    <string name="delete_this_alert">Supprimer cette alerte</string>
+
+    <!-- Résumé -->
+    <string name="arrived">Vous êtes arrivé</string>
+    <string name="trip_ended">Trajet terminé</string>
+    <string name="actual_duration">Réel</string>
+    <string name="estimated_duration">Estimé</string>
+    <string name="distance">Distance</string>
+    <string name="later_than_estimate">%1$s de plus que prévu</string>
+    <string name="earlier_than_estimate">%1$s de moins que prévu</string>
+    <string name="save_as_favorite">Enregistrer la destination en favori</string>
+
+    <!-- Voix -->
+    <string name="voice_in_distance">Dans %1$s, %2$s</string>
+    <string name="voice_reminder">%1$s signalé par vous, droit devant</string>
+    <string name="voice_arrived">Vous êtes arrivé à destination.</string>
+    <plurals name="voice_m">
+        <item quantity="one">%d mètre</item>
+        <item quantity="many">%d mètres</item>
+        <item quantity="other">%d mètres</item>
+    </plurals>
+    <plurals name="voice_km">
+        <item quantity="one">%d kilomètre</item>
+        <item quantity="many">%d kilomètres</item>
+        <item quantity="other">%d kilomètres</item>
+    </plurals>
+    <plurals name="voice_ft">
+        <item quantity="one">%d pied</item>
+        <item quantity="many">%d pieds</item>
+        <item quantity="other">%d pieds</item>
+    </plurals>
+    <plurals name="voice_mi">
+        <item quantity="one">%d mile</item>
+        <item quantity="many">%d miles</item>
+        <item quantity="other">%d miles</item>
+    </plurals>
+
+    <!-- Notifications -->
+    <string name="notif_channel">Navigation</string>
+    <string name="notif_starting">Démarrage du guidage…</string>
+    <string name="notif_eta">%1$s restantes · arrivée %2$s</string>
+
+    <!-- Alertes -->
+    <string name="what_do_you_see">Que voyez-vous ?</string>
+    <string name="alerts_stay_local">Enregistré uniquement sur ce téléphone, visible par vous seul.</string>
+    <string name="more_types">Autres types</string>
+    <string name="main_categories">Catégories principales</string>
+    <string name="not_allowed_short">Interdit ici</string>
+    <string name="not_allowed_country">Ce type d’alerte est désactivé selon les règles du pays choisi.</string>
+    <string name="alert_saved">Alerte enregistrée : %1$s</string>
+    <string name="alert_merged">Un passage de plus ajouté à votre alerte existante</string>
+    <string name="refine_optional">Préciser (facultatif)</string>
+    <string name="duplicate_title">Déjà signalé ici</string>
+    <string name="duplicate_text">Vous avez signalé « %1$s » à moins de 30 m le %2$s.</string>
+    <string name="merge">Fusionner</string>
+    <string name="create_anyway">Créer quand même</string>
+    <string name="note">Note</string>
+    <string name="place_name">Nom du lieu</string>
+    <string name="edit_note">Modifier la note</string>
+    <string name="personal_alert_local">Alerte personnelle · stockée uniquement sur cet appareil</string>
+    <string name="created_on">Créée le</string>
+    <string name="passes">Signalements</string>
+    <string name="passes_n">%1$d×</string>
+    <string name="send_to_osm">Envoyer à OpenStreetMap</string>
+    <string name="osm_preview_intro">Exactement ceci sera envoyé, sans compte, comme note publique :</string>
+    <string name="osm_public_warning">Les notes OpenStreetMap sont publiques. Votre alerte reste sur votre appareil dans tous les cas.</string>
+    <string name="osm_sent">Note envoyée à OpenStreetMap</string>
+    <string name="osm_failed">Impossible d’envoyer la note</string>
+    <string name="roadside_disclaimer">Cap ne remplace pas les services d’urgence et ne garantit aucun secours. En cas de danger, appelez le numéro d’urgence.</string>
+    <string name="call_emergency">Appeler le 112</string>
+    <string name="send_position">Envoyer ma position à un proche</string>
+    <string name="help_sms">J’ai besoin d’aide sur la route. Ma position : %1$s %2$s</string>
+    <plurals name="alerts_deleted">
+        <item quantity="one">%d alerte supprimée</item>
+        <item quantity="many">%d alertes supprimées</item>
+        <item quantity="other">%d alertes supprimées</item>
+    </plurals>
+
+    <string name="alert_traffic_jam">Embouteillage</string>
+    <string name="alert_police">Police</string>
+    <string name="alert_accident">Accident</string>
+    <string name="alert_hazard">Danger</string>
+    <string name="alert_road_closed">Route fermée</string>
+    <string name="alert_lane_blocked">Voie bloquée</string>
+    <string name="alert_map_issue">Problème carte</string>
+    <string name="alert_bad_weather">Mauvais temps</string>
+    <string name="alert_fuel_price">Prix carburant</string>
+    <string name="alert_roadside_help">Assistance</string>
+    <string name="alert_map_note">Message carte</string>
+    <string name="alert_place">Lieu</string>
+    <string name="alert_roadworks">Travaux</string>
+    <string name="alert_speed_camera">Radar</string>
+
+    <string name="sub_moderate">Modéré</string>
+    <string name="sub_heavy">Important</string>
+    <string name="sub_standstill">À l’arrêt</string>
+    <string name="sub_visible">Visible</string>
+    <string name="sub_hidden">Cachée</string>
+    <string name="sub_my_side">De mon côté</string>
+    <string name="sub_other_side">Côté opposé</string>
+    <string name="sub_minor">Mineur</string>
+    <string name="sub_major">Grave</string>
+    <string name="sub_object">Objet sur la route</string>
+    <string name="sub_pothole">Nid-de-poule</string>
+    <string name="sub_stopped_vehicle">Véhicule en panne</string>
+    <string name="sub_animal">Animal</string>
+    <string name="sub_fog">Brouillard</string>
+    <string name="sub_ice">Verglas</string>
+    <string name="sub_slippery">Route glissante</string>
+    <string name="sub_lights_out">Feux en panne</string>
+    <string name="sub_works">Travaux</string>
+    <string name="sub_accident">Accident</string>
+    <string name="sub_event">Événement</string>
+    <string name="sub_left">Voie de gauche</string>
+    <string name="sub_center">Voie centrale</string>
+    <string name="sub_right">Voie de droite</string>
+    <string name="sub_address">Adresse erronée</string>
+    <string name="sub_missing_road">Route manquante</string>
+    <string name="sub_wrong_oneway">Sens interdit erroné</string>
+    <string name="sub_wrong_turn">Restriction de virage incorrecte</string>
+    <string name="sub_wrong_speed">Limitation erronée</string>
+    <string name="sub_place_closed">Lieu fermé</string>
+    <string name="sub_rain">Pluie forte</string>
+    <string name="sub_storm">Orage</string>
+    <string name="sub_hail">Grêle</string>
+    <string name="sub_snow">Neige</string>
+    <string name="sub_wind">Vent fort</string>
+    <string name="sub_flood">Inondation</string>
+    <string name="sub_breakdown">Panne</string>
+    <string name="sub_assistance">Besoin d’assistance</string>
+    <string name="sub_fixed">Fixe</string>
+    <string name="sub_mobile">Mobile</string>
+    <string name="sub_other">Autre</string>
+
+    <!-- Mes alertes -->
+    <string name="alerts">Alertes</string>
+    <string name="display">Affichage</string>
+    <string name="alert_opacity">Opacité des marqueurs : %1$d %%</string>
+    <string name="approach_reminders">Me prévenir à l’approche</string>
+    <string name="show_alerts_on_map">Afficher mes alertes sur la carte</string>
+    <string name="search_alerts">Rechercher dans mes alertes</string>
+    <string name="sort_date">Plus récentes</string>
+    <string name="sort_distance">Plus proches</string>
+    <string name="sort_type">Type</string>
+    <string name="all_types">Toutes</string>
+    <string name="no_alerts_yet">Aucune alerte. Utilisez le bouton de signalement pour mémoriser un endroit à problème.</string>
+    <string name="no_matching_alerts">Aucune alerte ne correspond.</string>
+    <string name="delete_n">Supprimer (%1$d)</string>
+    <string name="delete_all_of_type">Tout supprimer par type</string>
+    <string name="delete_all">Tout supprimer</string>
+    <string name="confirm_delete_title">Supprimer les alertes ?</string>
+    <string name="confirm_delete_text">%1$d alertes seront effacées définitivement de cet appareil.</string>
+    <string name="export_alerts">Exporter (chiffré)</string>
+    <string name="import_alerts">Importer</string>
+    <string name="export_explain">Le fichier est chiffré avec ce mot de passe (8 caractères minimum). Sans lui, il est illisible.</string>
+    <string name="import_explain">Saisissez le mot de passe utilisé lors de l’export.</string>
+    <string name="password">Mot de passe</string>
+    <string name="password_confirm">Confirmer le mot de passe</string>
+    <string name="export_done">Alertes exportées</string>
+    <string name="export_failed">Échec de l’export</string>
+    <string name="import_failed">Échec de l’import : mot de passe erroné ou fichier invalide</string>
+    <plurals name="import_done">
+        <item quantity="one">%d alerte importée</item>
+        <item quantity="many">%d alertes importées</item>
+        <item quantity="other">%d alertes importées</item>
+    </plurals>
+
+    <!-- Paramètres -->
+    <string name="theme_auto">Automatique</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="high_contrast">Contraste élevé</string>
+    <string name="accessible_traffic">Couleurs trafic adaptées aux daltoniens</string>
+    <string name="report_button_left">Bouton de signalement à gauche</string>
+    <string name="units_metric">Kilomètres</string>
+    <string name="units_imperial">Miles</string>
+    <string name="voice">Voix</string>
+    <string name="voice_guidance">Guidage vocal</string>
+    <string name="voice_local_only">Utilise uniquement la synthèse vocale de l’appareil.</string>
+    <string name="hidden_on_map">Masqués sur la carte</string>
+    <string name="no_reminder_for">Pas de rappel d’approche pour</string>
+    <string name="country_rules">Règles par pays</string>
+    <string name="country_rules_hint">Certains pays interdisent d’avertir des radars ou contrôles. Choisissez où vous roulez.</string>
+    <string name="servers">Serveurs</string>
+    <string name="servers_hint">Par défaut : serveurs publics de démonstration gratuits. Auto-hébergez (docs/SELF_HOSTING.md) pour un usage intensif ou privé.</string>
+    <string name="server_routing">Itinéraire (Valhalla)</string>
+    <string name="server_geocoder">Recherche (Photon)</string>
+    <string name="server_style_day">Style de carte (jour)</string>
+    <string name="server_style_night">Style de carte (nuit)</string>
+    <string name="https_required">Adresse HTTPS requise</string>
+    <string name="restore_defaults">Rétablir les valeurs par défaut</string>
+    <string name="about">À propos</string>
+    <string name="about_licenses">À propos et licences</string>
+    <string name="about_body">Navigation libre et open source. Sans compte, sans pistage, sans publicité. Licence GPL-3.0-or-later.</string>
+    <string name="licenses">Licences et données</string>
+    <string name="disclaimer">Avertissement</string>
+    <string name="disclaimer_body">Cap est un projet indépendant, sans lien avec Waze ou Google. Respectez toujours la signalisation et le code de la route ; le guidage peut se tromper.</string>
+
+    <!-- Vie privée -->
+    <string name="privacy_dashboard">Tableau de bord Vie privée</string>
+    <string name="stays_on_device">Reste sur cet appareil</string>
+    <string name="stays_on_device_body">Chiffré avec une clé détenue par l’Android Keystore. Jamais sauvegardé dans le cloud, jamais synchronisé.</string>
+    <string name="leaves_device">Quitte l’appareil</string>
+    <string name="flow_search">Recherche : texte saisi, position arrondie à ~1 km</string>
+    <string name="flow_routing">Itinéraires : départ, étapes et destination</string>
+    <string name="flow_tiles">Carte : la zone affichée (tuiles)</string>
+    <string name="flow_osm">Note OpenStreetMap : uniquement si vous en envoyez une</string>
+    <string name="never_sent">Jamais envoyé : vos alertes personnelles, favoris, historique, trajets, identifiants.</string>
+    <string name="network_journal">Journal réseau</string>
+    <string name="journal_empty">Rien n’a encore quitté l’appareil.</string>
+    <string name="requests_bytes">%1$d req. · ↑%2$d Ko ↓%3$d Ko</string>
+    <string name="purpose_geocoding">Recherche</string>
+    <string name="purpose_routing">Itinéraire</string>
+    <string name="purpose_poi">Arrêts le long du trajet</string>
+    <string name="purpose_tiles">Tuiles de carte</string>
+    <string name="purpose_osm">Note OpenStreetMap</string>
+    <string name="clear_journal">Effacer le journal</string>
+    <string name="clear_recents">Effacer l’historique de recherche</string>
+    <string name="erase_everything">Tout effacer</string>
+    <string name="erase_everything_text">Toutes les alertes, favoris, historique, réglages et la clé de chiffrement seront détruits. Action irréversible.</string>
+    <string name="erase">Effacer</string>
+    <string name="everything_erased">Tout a été effacé</string>
+    <string name="diagnostics">Diagnostic local</string>
+    <string name="trip_transitions">Transitions d’état du trajet</string>
+
+    <!-- Accueil -->
+    <string name="onboarding_lead">Le guidage virage par virage qui vous respecte.</string>
+    <string name="ob_no_account_title">Aucun compte</string>
+    <string name="ob_no_account">Pas d’inscription, pas d’identifiant, pas de publicité, pas de traceur.</string>
+    <string name="ob_local_title">Vos alertes restent à vous</string>
+    <string name="ob_local">Les endroits que vous signalez sont chiffrés sur ce téléphone uniquement et ne sont jamais partagés.</string>
+    <string name="ob_location_title">Position précise</string>
+    <string name="ob_location">Sert à afficher votre position et à vous guider. En arrière-plan uniquement pendant un trajet.</string>
+    <string name="ob_notif_title">Notifications</string>
+    <string name="ob_notif">Affiche la prochaine manœuvre et Pause / Arrêter quand l’écran est éteint.</string>
+    <string name="ob_servers_title">Serveurs ouverts</string>
+    <string name="ob_servers">Cartes, recherche et itinéraires proviennent de serveurs publics de démonstration basés sur OpenStreetMap. Vous pouvez utiliser votre propre serveur dans les Paramètres.</string>
+    <string name="ob_continue">Continuer</string>
+    <string name="reorient">Orienter la carte dans mon sens de marche</string>
+    <string name="north_up">Nord en haut</string>
+    <string name="favorites_hint">Enregistrez les adresses que vous utilisez souvent, avec votre nom et votre icône. Stocké chiffré sur cet appareil uniquement.</string>
+    <string name="no_favorites">Aucun favori pour l’instant.</string>
+    <string name="add_favorite">Ajouter un favori</string>
+    <string name="edit_favorite">Modifier le favori</string>
+    <string name="delete_favorite_title">Supprimer ce favori ?</string>
+    <string name="favorite_name">Nom</string>
+    <string name="icon">Icône</string>
+    <string name="other">Autre</string>
+    <string name="edit">Modifier</string>
+    <string name="manage_favorites">Favoris</string>
+</resources>

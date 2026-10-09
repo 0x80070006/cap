@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "updated": "2026-10-09",
+  "note": "Conservative defaults, not legal advice. Unknown countries get speedCameraAlerts=false and policeAlerts=false. Sources and rationale: docs/LEGAL_RULES.md",
+  "countries": {
+    "FR": { "speedCameraAlerts": false, "policeAlerts": true },
+    "DE": { "speedCameraAlerts": false, "policeAlerts": true },
+    "CH": { "speedCameraAlerts": false, "policeAlerts": false },
+    "AT": { "speedCameraAlerts": false, "policeAlerts": true },
+    "BE": { "speedCameraAlerts": true, "policeAlerts": true },
+    "ES": { "speedCameraAlerts": true, "policeAlerts": true },
+    "IT": { "speedCameraAlerts": true, "policeAlerts": true },
+    "NL": { "speedCameraAlerts": true, "policeAlerts": true },
+    "GB": { "speedCameraAlerts": true, "policeAlerts": true }
+  }
+}
