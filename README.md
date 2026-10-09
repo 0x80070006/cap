@@ -1,4 +1,7 @@
 <img src="docs/media/logo.png" alt="" width="96" align="right">
+**EN DEV ACTIF**
+*Peut contenir des bugs*
+
 
 # Cap — GPS libre, privé par conception
 
