@@ -5,6 +5,8 @@
 Première version publique (phases 0 et 1 du plan, plus une partie de la phase 2).
 
 ### Ajouté
+- Paramètres modifiés en brouillon puis appliqués par un bouton « Enregistrer » collant en bas d’écran (confirmation si on quitte sans enregistrer) ; zoom et inclinaison appliqués immédiatement à la carte.
+- Bouton son (guidage vocal) directement sur l’écran d’accueil.
 - Sélecteur de langue Français / English en haut des paramètres.
 - Choix du point de départ dans la prévisualisation (position actuelle par défaut).
 - Proposition de déviation en cours de trajet quand un ralentissement est détecté (allure observée + zone d'exclusion Valhalla), ETA corrigée.

@@ -58,6 +58,7 @@ fun CapRoot(vm: CapViewModel, onRequestPermissions: () -> Unit) {
                     }
                     val trip by vm.trip.collectAsStateWithLifecycle()
                     BackHandler(enabled = vm.screen != Screen.MAP) {
+                        if (vm.screen == Screen.SETTINGS) return@BackHandler vm.leaveSettings()
                         vm.screen = when (vm.screen) {
                             Screen.PRIVACY, Screen.ABOUT -> Screen.SETTINGS
                             Screen.SEARCH -> {

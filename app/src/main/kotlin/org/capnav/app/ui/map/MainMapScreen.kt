@@ -2,6 +2,8 @@ package org.capnav.app.ui.map
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.icons.automirrored.outlined.VolumeOff
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.material.icons.outlined.Navigation
@@ -157,7 +159,12 @@ private fun IdleOverlay(vm: CapViewModel) {
             Modifier.align(Alignment.TopEnd).statusBarsPadding().padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            MapIconButton(Icons.Outlined.Settings, stringResource(R.string.settings), { vm.screen = Screen.SETTINGS })
+            MapIconButton(Icons.Outlined.Settings, stringResource(R.string.settings), vm::openSettings)
+            MapIconButton(
+                if (settings.voiceEnabled) Icons.AutoMirrored.Outlined.VolumeUp else Icons.AutoMirrored.Outlined.VolumeOff,
+                stringResource(if (settings.voiceEnabled) R.string.mute else R.string.unmute),
+                { vm.updateSettings { it.copy(voiceEnabled = !it.voiceEnabled) } },
+            )
             MapIconButton(Icons.Outlined.TaskAlt, stringResource(R.string.my_alerts), { vm.screen = Screen.MY_ALERTS })
             MapIconButton(
                 if (settings.alertsVisible) Icons.Outlined.Visibility else Icons.Outlined.VisibilityOff,

@@ -205,7 +205,7 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
         }
     }
 
-    private fun browseZoom() = settings.value.navZoom - 1.0
+    private fun browseZoom() = settings.value.navZoom.toDouble()
 
     fun recenter() {
         followUser = true
@@ -743,6 +743,53 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
     }
 
     // ---------- Settings & privacy ----------
+
+    /** Settings are edited as a draft and applied only with "Save". */
+    var settingsDraft by mutableStateOf<AppSettings?>(null); private set
+    var confirmLeaveSettings by mutableStateOf(false)
+    val settingsDirty get() = settingsDraft != null && settingsDraft != settings.value
+
+    fun openSettings() {
+        settingsDraft = settings.value
+        screen = Screen.SETTINGS
+    }
+
+    fun editDraft(f: (AppSettings) -> AppSettings) {
+        settingsDraft = f(settingsDraft ?: settings.value)
+    }
+
+    private suspend fun persistDraft() {
+        val d = settingsDraft ?: return
+        // Values edited from other screens (My alerts, map buttons) are kept as they are now.
+        c.settings.update {
+            d.copy(
+                onboardingDone = it.onboardingDone,
+                alertOpacity = it.alertOpacity,
+                alertsVisible = it.alertsVisible,
+                approachReminders = it.approachReminders,
+            )
+        }
+        toast(R.string.settings_saved)
+    }
+
+    fun saveSettings() = viewModelScope.launch {
+        persistDraft()
+        if (settingsDraft != null) settingsDraft = c.settings.settings.value
+    }
+
+    fun saveAndLeaveSettings() = viewModelScope.launch {
+        persistDraft()
+        discardSettings()
+    }
+
+    fun leaveSettings() {
+        if (settingsDirty) confirmLeaveSettings = true else discardSettings()
+    }
+
+    fun discardSettings() {
+        settingsDraft = null
+        screen = Screen.MAP
+    }
 
     fun updateSettings(f: (AppSettings) -> AppSettings) = viewModelScope.launch { c.settings.update(f) }
 

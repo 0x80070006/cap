@@ -331,14 +331,21 @@ class MapController(private val map: MapLibreMap) {
         private set
 
     /** Browsing camera: keeps the user centred, optionally heading-up, keeping the user's zoom. */
-    fun followBrowse(f: Fix, headingUp: Boolean) {
+    fun followBrowse(f: Fix, headingUp: Boolean, tiltDeg: Double) {
         if (scaling) return
         val pos = CameraPosition.Builder()
             .target(LatLng(f.point.lat, f.point.lon))
             .bearing(if (headingUp) (f.bearingDeg ?: map.cameraPosition.bearing.toFloat()).toDouble() else 0.0)
-            .tilt(0.0)
+            .tilt(if (headingUp) tiltDeg else 0.0)
             .build()
         map.animateCamera(CameraUpdateFactory.newCameraPosition(pos), 700)
+    }
+
+    /** Applies a newly saved zoom / tilt right away, keeping the current target and bearing. */
+    fun applyView(zoom: Double, tiltDeg: Double) {
+        val pos = CameraPosition.Builder(map.cameraPosition).zoom(zoom).tilt(tiltDeg).build()
+        lastCamera = pos
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(pos), 600)
     }
 
     /**

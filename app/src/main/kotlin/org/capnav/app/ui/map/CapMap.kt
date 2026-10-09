@@ -125,9 +125,12 @@ fun CapMap(
             when {
                 fix == null -> Unit
                 followMode == FollowMode.DRIVE -> ctl.follow(fix, headingUp, mapView.height, navZoom, navTilt)
-                followMode == FollowMode.BROWSE -> ctl.followBrowse(fix, headingUp)
+                followMode == FollowMode.BROWSE -> ctl.followBrowse(fix, headingUp, navTilt)
                 else -> Unit
             }
+        }
+        LaunchedEffect(ctl, navZoom, navTilt) {
+            if (followMode != FollowMode.DRIVE) ctl.applyView(navZoom, if (headingUp) navTilt else 0.0)
         }
         LaunchedEffect(ctl, camera) { camera?.let { ctl.moveTo(it.point, it.zoom, it.bearing) } }
         LaunchedEffect(ctl, fitKey) {

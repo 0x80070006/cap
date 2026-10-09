@@ -371,4 +371,9 @@
     <string name="ignore">Ignore</string>
     <string name="voice_detour">Slowdown ahead. A faster route saves %1$d minutes.</string>
     <string name="language">Language / Langue</string>
+    <string name="save_settings">Save settings</string>
+    <string name="settings_saved">Settings saved</string>
+    <string name="unsaved_title">Unsaved changes</string>
+    <string name="unsaved_text">Save your changes before leaving?</string>
+    <string name="discard">Discard</string>
 </resources>

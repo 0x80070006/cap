@@ -17,7 +17,7 @@ Application de navigation Android **open source** (GPL-3.0-or-later) inspirée d
 - **Carte vectorielle MapLibre** (OpenStreetMap via OpenFreeMap) : eau en bleu, espaces verts en vert, bâtiments en gris, thème jour/nuit automatique, attribution ODbL visible.
 - **Position GNSS native et précise** (`LocationManager` haute précision, aucune dépendance Google ; les positions réseau imprécises sont écartées tant que le GPS est frais ; bandeau si seule la position approximative est autorisée ou si le GPS est coupé), curseur bleu orienté dans le sens de déplacement, **bouton de recalibrage** (appui : carte orientée dans le sens de marche ; appui long : nord en haut).
 - **Vue réglable** : vue plate de dessus par défaut, zoom rapproché sur le curseur ; zoom et inclinaison réglables dans les paramètres (avec retour aux valeurs par défaut), pincement en navigation mémorisé.
-- **Langue** : sélecteur Français / English en haut des paramètres.
+- **Langue** : sélecteur Français / English en haut des paramètres ; réglages appliqués via un bouton « Enregistrer » toujours accessible ; son activable depuis l’accueil.
 - **Recherche** avec autocomplétion (Photon), biais géographique arrondi à ~1 km, coordonnées saisies résolues localement, catégories (carburant, recharge, parking…), historique.
 - **Favoris** Maison / Travail / personnalisés, avec **nom et icône au choix** (16 icônes), chiffrés sur l'appareil.
 - **Prévisualisation du trajet** : point de départ = position actuelle par défaut, ou n'importe quel lieu recherché ; jusqu'à 3 itinéraires (Valhalla), durée, distance, heure d'arrivée, péages/autoroute/ferry, liste des manœuvres, étapes réordonnables, options (éviter péages/autoroutes/ferries/non goudronné, profil véhicule).

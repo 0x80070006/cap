@@ -375,4 +375,9 @@
     <string name="ignore">Ignorer</string>
     <string name="voice_detour">Ralentissement devant. Un itinéraire plus rapide fait gagner %1$d minutes.</string>
     <string name="language">Langue / Language</string>
+    <string name="save_settings">Enregistrer les paramètres</string>
+    <string name="settings_saved">Paramètres enregistrés</string>
+    <string name="unsaved_title">Modifications non enregistrées</string>
+    <string name="unsaved_text">Enregistrer vos modifications avant de quitter ?</string>
+    <string name="discard">Abandonner</string>
 </resources>
