@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -55,6 +57,7 @@ fun SettingsScreen(vm: CapViewModel) {
         Column(Modifier.statusBarsPadding().navigationBarsPadding()) {
             ScreenHeader(stringResource(R.string.settings), onBack = { vm.screen = Screen.MAP })
             Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp)) {
+                LanguageSwitch()
                 NavRow(stringResource(R.string.privacy_dashboard)) { vm.screen = Screen.PRIVACY }
                 NavRow(stringResource(R.string.my_alerts)) { vm.screen = Screen.MY_ALERTS }
                 NavRow(stringResource(R.string.favorites)) { vm.screen = Screen.FAVORITES }
@@ -77,6 +80,25 @@ fun SettingsScreen(vm: CapViewModel) {
                         })
                     }
                 }
+
+                SectionTitle(stringResource(R.string.map_view))
+                SliderSetting(
+                    label = stringResource(R.string.nav_zoom, "%.1f".format(s.navZoom)),
+                    value = s.navZoom,
+                    range = AppSettings.MIN_NAV_ZOOM..AppSettings.MAX_NAV_ZOOM,
+                    isDefault = s.navZoom == AppSettings.DEFAULT_NAV_ZOOM,
+                    onChange = { v -> vm.updateSettings { it.copy(navZoom = v) } },
+                    onReset = { vm.updateSettings { it.copy(navZoom = AppSettings.DEFAULT_NAV_ZOOM) } },
+                )
+                SliderSetting(
+                    label = if (s.navTilt < 1f) stringResource(R.string.nav_tilt_flat) else stringResource(R.string.nav_tilt, s.navTilt.toInt()),
+                    value = s.navTilt,
+                    range = 0f..AppSettings.MAX_NAV_TILT,
+                    isDefault = s.navTilt == AppSettings.DEFAULT_NAV_TILT,
+                    onChange = { v -> vm.updateSettings { it.copy(navTilt = v) } },
+                    onReset = { vm.updateSettings { it.copy(navTilt = AppSettings.DEFAULT_NAV_TILT) } },
+                )
+                Text(stringResource(R.string.map_view_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
 
                 SectionTitle(stringResource(R.string.voice))
                 Toggle(stringResource(R.string.voice_guidance), s.voiceEnabled) { c -> vm.updateSettings { it.copy(voiceEnabled = c) } }
@@ -116,6 +138,40 @@ fun SettingsScreen(vm: CapViewModel) {
             }
         }
     }
+}
+
+/** Français / English, at the very top of the settings. Labels stay in their own language. */
+@Composable
+private fun LanguageSwitch() {
+    val context = LocalContext.current
+    val current = remember { AppLanguage.effective(context) }
+    SectionTitle(stringResource(R.string.language))
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
+        listOf("fr" to "Français", "en" to "English").forEach { (tag, label) ->
+            FilterChip(
+                selected = current == tag,
+                onClick = { if (current != tag) (context as? android.app.Activity)?.let { AppLanguage.set(it, tag) } },
+                label = { Text(label, style = MaterialTheme.typography.titleSmall) },
+                modifier = Modifier.weight(1f).heightIn(min = 56.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun SliderSetting(
+    label: String,
+    value: Float,
+    range: ClosedFloatingPointRange<Float>,
+    isDefault: Boolean,
+    onChange: (Float) -> Unit,
+    onReset: () -> Unit,
+) {
+    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
+        Text(label, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+        TextButton(onClick = onReset, enabled = !isDefault) { Text(stringResource(R.string.reset_default)) }
+    }
+    Slider(value = value, onValueChange = onChange, valueRange = range)
 }
 
 private fun Set<AlertType>.toggle(t: AlertType) = if (t in this) this - t else this + t

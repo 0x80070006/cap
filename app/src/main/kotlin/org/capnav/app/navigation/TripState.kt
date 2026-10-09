@@ -22,7 +22,11 @@ data class Progress(
     val remainingS: Double,
     val legIndex: Int,
     val speedMps: Float,
+    /** Extra time expected on the next stretch, inferred from the speed actually observed (jam). */
+    val delayS: Double = 0.0,
 ) {
+    val etaS get() = remainingS + delayS
+
     companion object {
         fun initial(route: Route) = Progress(
             matched = route.shape.first(),

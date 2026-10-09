@@ -19,7 +19,8 @@
 - ⬜ Régions PMTiles + graphe Valhalla embarqué (JNI) + géocodage local, mises à jour signées Ed25519 (R-10).
 
 ## Phase 4 — Trafic réel
-- ⬜ Ingestion DATEX II (Bison Futé / PAN), injection dans les coûts, incidents officiels à pleine opacité, recalcul proactif (> 2 min et > 8 %), évaluation ETA (R-21).
+- ✅ Recalcul proactif (> 2 min et > 8 %) déclenché par l'allure observée, avec zone d'exclusion du tronçon ralenti ; ETA corrigée par la vitesse réelle.
+- ⬜ Ingestion DATEX II (Bison Futé / PAN), injection dans les coûts, incidents officiels à pleine opacité, évaluation ETA prévu/réel en CI (R-21).
 
 ## Phase 5 — Vie privée avancée
 - ✅ Tableau de bord Vie privée + journal réseau.

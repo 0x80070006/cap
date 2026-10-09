@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.AssistChip
@@ -70,9 +71,17 @@ fun SearchScreen(vm: CapViewModel) {
     Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(Modifier.statusBarsPadding().navigationBarsPadding().imePadding()) {
             ScreenHeader(
-                stringResource(if (vm.pickingFavorite) R.string.add_favorite else if (vm.pickingStop) R.string.add_stop else R.string.search),
+                stringResource(
+                    when {
+                        vm.pickingOrigin -> R.string.start_point
+                        vm.pickingFavorite -> R.string.add_favorite
+                        vm.pickingStop -> R.string.add_stop
+                        else -> R.string.search
+                    },
+                ),
                 onBack = {
                     vm.pickingStop = false
+                    vm.pickingOrigin = false
                     vm.screen = if (vm.pickingFavorite) Screen.FAVORITES else Screen.MAP
                     vm.pickingFavorite = false
                 },
@@ -110,6 +119,18 @@ fun SearchScreen(vm: CapViewModel) {
                         PlaceRow(Icons.Outlined.Place, p, fix?.let { Format.distance(Geo.distanceM(it.point, p.point), settings.units) }) { vm.pick(p) }
                     }
                 } else if (vm.query.isBlank()) {
+                    if (vm.pickingOrigin) item {
+                        Row(
+                            Modifier.fillMaxWidth().clickable { vm.pickingOrigin = false; vm.screen = Screen.MAP; vm.setOrigin(null) }
+                                .heightIn(min = 64.dp).padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Icon(Icons.Outlined.MyLocation, null, tint = MaterialTheme.colorScheme.primary)
+                            Spacer(Modifier.width(16.dp))
+                            Text(stringResource(R.string.my_position), style = MaterialTheme.typography.titleMedium)
+                        }
+                        HorizontalDivider()
+                    }
                     if (places.favorites.isNotEmpty()) {
                         item { SectionTitle(stringResource(R.string.favorites), Modifier.padding(horizontal = 16.dp)) }
                         items(places.favorites, key = { "f${it.kind}${it.place.point.lat},${it.place.point.lon}" }) { f ->

@@ -49,8 +49,8 @@ class NavigationService : LifecycleService() {
                         val units = container.settings.settings.value.units
                         val title = "${Format.distance(p.distanceToManeuverM, units)} · ${m?.instruction.orEmpty()}"
                         val text = getString(
-                            R.string.notif_eta, Format.duration(p.remainingS),
-                            Format.clock(System.currentTimeMillis() + (p.remainingS * 1000).toLong()),
+                            R.string.notif_eta, Format.duration(p.etaS),
+                            Format.clock(System.currentTimeMillis() + (p.etaS * 1000).toLong()),
                         )
                         nm.notify(NOTIF_ID, build(title, text, paused = false))
                     }

@@ -356,4 +356,23 @@
     <string name="other">Autre</string>
     <string name="edit">Modifier</string>
     <string name="manage_favorites">Favoris</string>
+    <string name="map_view">Vue de la carte</string>
+    <string name="nav_zoom">Zoom en navigation : %1$s</string>
+    <string name="nav_tilt">Inclinaison dans le sens de la marche : %1$d°</string>
+    <string name="nav_tilt_flat">Inclinaison : vue plate, de dessus</string>
+    <string name="map_view_hint">La carte se dézoome un peu à vitesse élevée. Pincer la carte en navigation règle aussi le zoom.</string>
+    <string name="reset_default">Par défaut</string>
+    <string name="location_approximate">Position approximative seulement : autorisez la « position exacte » pour un guidage précis.</string>
+    <string name="gps_off">La localisation (GPS) est désactivée sur ce téléphone.</string>
+    <string name="fix_it">Corriger</string>
+    <string name="start_point">Point de départ</string>
+    <string name="my_position">Ma position</string>
+    <string name="change">Modifier</string>
+    <string name="custom_origin_hint">Itinéraire planifié depuis un autre point. Une fois démarré, le guidage suit toujours votre position réelle.</string>
+    <string name="detour_title">Ralentissement devant : itinéraire plus rapide, %1$d min gagnées</string>
+    <string name="detour_hint">D’après votre vitesse observée (trafic en direct indisponible sur ce serveur).</string>
+    <string name="take_detour">Prendre</string>
+    <string name="ignore">Ignorer</string>
+    <string name="voice_detour">Ralentissement devant. Un itinéraire plus rapide fait gagner %1$d minutes.</string>
+    <string name="language">Langue / Language</string>
 </resources>

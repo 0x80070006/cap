@@ -22,7 +22,10 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material.icons.outlined.Navigation
+import androidx.compose.material.icons.outlined.TripOrigin
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -100,6 +103,7 @@ fun RoutePreviewSheet(vm: CapViewModel, s: TripState.Previewing, units: Units, m
             }
             MapIconButton(Icons.Outlined.Close, stringResource(R.string.close), { vm.cancelPreview() }, size = 48.dp)
         }
+        OriginRow(vm)
         Text(
             stringResource(R.string.traffic_unavailable),
             style = MaterialTheme.typography.bodySmall,
@@ -169,6 +173,33 @@ fun RoutePreviewSheet(vm: CapViewModel, s: TripState.Previewing, units: Units, m
             PrimaryButton(stringResource(R.string.start), { vm.startTrip() }, Modifier.weight(1.4f), icon = Icons.Outlined.Navigation)
         }
     }
+}
+
+/** Start point: current position by default, any searched place on demand. */
+@Composable
+private fun OriginRow(vm: CapViewModel) {
+    val origin = vm.customOrigin
+    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).padding(top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            if (origin == null) Icons.Outlined.MyLocation else Icons.Outlined.TripOrigin, null,
+            tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp),
+        )
+        Spacer(Modifier.width(8.dp))
+        Column(Modifier.weight(1f)) {
+            Text(stringResource(R.string.start_point), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                origin?.name ?: stringResource(R.string.my_position),
+                style = MaterialTheme.typography.bodyLarge, maxLines = 1, overflow = TextOverflow.Ellipsis,
+            )
+        }
+        if (origin != null) TextButton(onClick = { vm.setOrigin(null) }) { Text(stringResource(R.string.my_position)) }
+        TextButton(onClick = vm::openSearchForOrigin) { Text(stringResource(R.string.change)) }
+    }
+    if (origin != null) Text(
+        stringResource(R.string.custom_origin_hint),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
 }
 
 @Composable

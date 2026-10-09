@@ -94,7 +94,14 @@ class ValhallaRouting(
                 .put("units", "kilometers")
                 .put("language", req.language)
                 .put("directions_options", JSONObject().put("units", "kilometers").put("language", req.language))
-                .apply { if (req.waypoints.size == 1) put("alternates", 2) }
+                .apply {
+                    if (req.waypoints.size == 1) put("alternates", 2)
+                    if (req.excludePolygons.isNotEmpty()) put("exclude_polygons", JSONArray().apply {
+                        req.excludePolygons.forEach { ring ->
+                            put(JSONArray().apply { ring.forEach { put(JSONArray().put(round6(it.lon)).put(round6(it.lat))) } })
+                        }
+                    })
+                }
         }
 
         private fun costingOptionsFor(o: RouteOptions) = JSONObject().apply {

@@ -95,6 +95,7 @@ fun DriveOverlay(vm: CapViewModel, state: TripState, settings: AppSettings) {
                 is TripState.Error -> StatusBanner(stringResource(R.string.reroute_failed), progress = false, action = stringResource(R.string.retry)) { vm.resume() }
                 else -> ManeuverBanner(trip, settings)
             }
+            vm.detour?.let { DetourBanner(vm, it) }
             vm.reminder?.let { ReminderBanner(vm, it, settings) }
         }
 
@@ -223,6 +224,33 @@ private fun ReminderBanner(vm: CapViewModel, alert: org.capnav.app.model.Persona
     }
 }
 
+/** Proactive reroute: proposed, never imposed (prompt §10). */
+@Composable
+private fun DetourBanner(vm: CapViewModel, d: org.capnav.app.ui.DetourProposal) {
+    Surface(
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(2.dp, Brand.purple),
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier.padding(12.dp).fillMaxWidth().semantics { liveRegion = LiveRegionMode.Assertive },
+    ) {
+        Column(Modifier.padding(12.dp)) {
+            Text(
+                stringResource(R.string.detour_title, ((d.gainS + 30) / 60).toInt()),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                stringResource(R.string.detour_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Row(Modifier.fillMaxWidth().padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                SecondaryButton(stringResource(R.string.ignore), vm::ignoreDetour, Modifier.weight(1f))
+                PrimaryButton(stringResource(R.string.take_detour), vm::acceptDetour, Modifier.weight(1.3f))
+            }
+        }
+    }
+}
+
 @Composable
 private fun SpeedBubble(speedMps: Float, settings: AppSettings) {
     Surface(
@@ -267,8 +295,8 @@ private fun EtaBar(vm: CapViewModel, trip: ActiveTrip, paused: Boolean, settings
                 Modifier.weight(1f).clickable(onClick = onToggle).padding(vertical = 4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(Format.duration(p.remainingS), fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                val eta = Format.clock(System.currentTimeMillis() + (p.remainingS * 1000).toLong())
+                Text(Format.duration(p.etaS), fontSize = 30.sp, fontWeight = FontWeight.Bold)
+                val eta = Format.clock(System.currentTimeMillis() + (p.etaS * 1000).toLong())
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         stringResource(R.string.distance_eta, Format.distance(p.remainingM, settings.units), eta),

@@ -43,7 +43,7 @@ fun CapRoot(vm: CapViewModel, onRequestPermissions: () -> Unit) {
                 !settings.onboardingDone -> OnboardingScreen(vm, onRequestPermissions)
                 else -> {
                     LaunchedEffect(Unit) { onRequestPermissions() }
-                    MainMapScreen(vm, dark)
+                    MainMapScreen(vm, dark, onRequestPermissions)
                     when (vm.screen) {
                         Screen.SEARCH -> SearchScreen(vm)
                         Screen.MY_ALERTS -> MyAlertsScreen(vm)
@@ -60,7 +60,10 @@ fun CapRoot(vm: CapViewModel, onRequestPermissions: () -> Unit) {
                     BackHandler(enabled = vm.screen != Screen.MAP) {
                         vm.screen = when (vm.screen) {
                             Screen.PRIVACY, Screen.ABOUT -> Screen.SETTINGS
-                            Screen.SEARCH -> if (vm.pickingFavorite) Screen.FAVORITES.also { vm.pickingFavorite = false } else Screen.MAP
+                            Screen.SEARCH -> {
+                                vm.pickingOrigin = false
+                                if (vm.pickingFavorite) Screen.FAVORITES.also { vm.pickingFavorite = false } else Screen.MAP
+                            }
                             else -> Screen.MAP
                         }
                     }

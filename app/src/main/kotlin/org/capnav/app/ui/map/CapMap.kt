@@ -60,12 +60,15 @@ fun CapMap(
     followMode: FollowMode,
     headingUp: Boolean,
     dark: Boolean,
+    navZoom: Double,
+    navTilt: Double,
     fitKey: Any?,
     fitPoints: List<GeoPoint>,
     onAlertClick: (AlertId) -> Unit,
     onLongPress: (GeoPoint) -> Unit,
     onUserGesture: () -> Unit,
     onBearingChange: (Double) -> Unit,
+    onUserZoom: (Double) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -78,6 +81,7 @@ fun CapMap(
     val longPress by rememberUpdatedState(onLongPress)
     val gesture by rememberUpdatedState(onUserGesture)
     val bearingChange by rememberUpdatedState(onBearingChange)
+    val userZoom by rememberUpdatedState(onUserZoom)
 
     DisposableEffect(lifecycle, mapView) {
         val observer = LifecycleEventObserver { _, e ->
@@ -103,6 +107,7 @@ fun CapMap(
                 this.onLongPress = { longPress(it) }
                 this.onUserGesture = { gesture() }
                 this.onBearingChange = { bearingChange(it) }
+                this.onUserZoom = { userZoom(it) }
             }
         }
     }
@@ -115,11 +120,11 @@ fun CapMap(
         LaunchedEffect(ctl, content.routes, content.selectedRoute) { ctl.setRoutes(content.routes, content.selectedRoute) }
         LaunchedEffect(ctl, content.waypoints) { ctl.setWaypoints(content.waypoints) }
         LaunchedEffect(ctl, content.selection) { ctl.setSelection(content.selection) }
-        LaunchedEffect(ctl, fix) {
+        LaunchedEffect(ctl, fix, navZoom, navTilt, headingUp, followMode) {
             ctl.setLocation(fix)
             when {
                 fix == null -> Unit
-                followMode == FollowMode.DRIVE -> ctl.follow(fix, headingUp, viewHeightPx = mapView.height)
+                followMode == FollowMode.DRIVE -> ctl.follow(fix, headingUp, mapView.height, navZoom, navTilt)
                 followMode == FollowMode.BROWSE -> ctl.followBrowse(fix, headingUp)
                 else -> Unit
             }

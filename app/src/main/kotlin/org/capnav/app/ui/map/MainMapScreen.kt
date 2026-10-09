@@ -79,14 +79,15 @@ import org.capnav.app.ui.routepreview.RoutePreviewSheet
 import org.capnav.app.ui.theme.Brand
 
 @Composable
-fun MainMapScreen(vm: CapViewModel, dark: Boolean) {
+fun MainMapScreen(vm: CapViewModel, dark: Boolean, onRequestPermissions: () -> Unit) {
     val settings by vm.settings.collectAsStateWithLifecycle()
     val trip by vm.trip.collectAsStateWithLifecycle()
     val alerts by vm.alerts.collectAsStateWithLifecycle()
     val fix by vm.fix.collectAsStateWithLifecycle()
     val active = trip.activeTrip
 
-    val content = remember(trip, alerts, settings, vm.selectedPlace) {
+    val detourRoute = vm.detour?.route
+    val content = remember(trip, alerts, settings, vm.selectedPlace, detourRoute) {
         val visibleAlerts = if (!settings.alertsVisible) emptyList()
         else alerts.filter { it.type !in settings.hiddenAlertTypes }
         when (val s = trip) {
@@ -96,7 +97,7 @@ fun MainMapScreen(vm: CapViewModel, dark: Boolean) {
                 alerts = visibleAlerts, alertOpacity = settings.alertOpacity,
             )
             else -> if (active != null) MapContent(
-                routes = listOf(active.route),
+                routes = listOfNotNull(active.route, detourRoute),
                 waypoints = active.remainingWaypoints.let { l -> l.mapIndexed { i, w -> w.place.point to (i == l.lastIndex) } },
                 alerts = visibleAlerts, alertOpacity = settings.alertOpacity,
             ) else MapContent(alerts = visibleAlerts, alertOpacity = settings.alertOpacity, selection = vm.selectedPlace?.point)
@@ -124,12 +125,15 @@ fun MainMapScreen(vm: CapViewModel, dark: Boolean) {
             },
             headingUp = vm.headingUp,
             dark = dark,
+            navZoom = settings.navZoom.toDouble(),
+            navTilt = settings.navTilt.toDouble(),
             fitKey = preview?.routes,
             fitPoints = fitPoints,
             onAlertClick = { vm.detailAlert = it },
             onLongPress = { p -> if (active == null) vm.onMapLongPress(p) else vm.openReport(p) },
             onUserGesture = { vm.followUser = false },
             onBearingChange = { vm.mapBearing = it },
+            onUserZoom = vm::onUserZoom,
             modifier = Modifier.fillMaxSize(),
         )
 
@@ -137,6 +141,9 @@ fun MainMapScreen(vm: CapViewModel, dark: Boolean) {
             is TripState.Previewing -> RoutePreviewSheet(vm, s, settings.units, Modifier.align(Alignment.BottomCenter))
             is TripState.Finished -> TripSummaryScreen(vm, s, settings.units)
             else -> if (active != null) DriveOverlay(vm, trip, settings) else IdleOverlay(vm)
+        }
+        if (trip !is TripState.Finished) {
+            LocationBanner(vm, onRequestPermissions, Modifier.align(if (active != null) Alignment.Center else Alignment.TopCenter))
         }
         AlertSheets(vm)
     }
@@ -171,7 +178,6 @@ private fun IdleOverlay(vm: CapViewModel) {
                 }
                 if (settings.reportButtonLeft) { report(); recenter() } else { recenter(); report() }
             }
-            if (!vm.locationGranted) LocationMissing()
             val place = vm.selectedPlace
             if (place != null) PlaceCard(vm, place) else HomePanel(vm)
         }
@@ -222,17 +228,36 @@ fun ReportFab(onClick: () -> Unit) {
     }
 }
 
+/** Makes sure navigation runs on the phone's precise (GNSS) position, and says how to fix it if not. */
 @Composable
-private fun LocationMissing() {
+private fun LocationBanner(vm: CapViewModel, onRequestPermissions: () -> Unit, modifier: Modifier) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val (text, action) = when {
+        !vm.locationGranted -> R.string.location_missing to { onRequestPermissions() }
+        !vm.locationPrecise -> R.string.location_approximate to {
+            context.startActivity(
+                android.content.Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    .setData(android.net.Uri.fromParts("package", context.packageName, null)),
+            )
+        }
+        !vm.gpsEnabled -> R.string.gps_off to {
+            context.startActivity(android.content.Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+        }
+        else -> return
+    }
     Surface(
         color = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        modifier = modifier.statusBarsPadding().padding(start = 12.dp, end = 84.dp, top = 12.dp),
     ) {
         Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Outlined.LocationOff, null)
             Spacer(Modifier.width(12.dp))
-            Text(stringResource(R.string.location_missing), style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(text), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f, fill = false))
+            androidx.compose.material3.TextButton(onClick = action, modifier = Modifier.heightIn(min = 48.dp)) {
+                Text(stringResource(R.string.fix_it))
+            }
         }
     }
 }

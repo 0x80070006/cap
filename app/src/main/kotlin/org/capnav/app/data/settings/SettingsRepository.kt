@@ -37,12 +37,21 @@ data class AppSettings(
     val geocoderUrl: String = DEFAULT_GEOCODER_URL,
     val styleDayUrl: String = DEFAULT_STYLE_DAY,
     val styleNightUrl: String = DEFAULT_STYLE_NIGHT,
+    /** Navigation zoom at low speed; it is reduced progressively at higher speeds. */
+    val navZoom: Float = DEFAULT_NAV_ZOOM,
+    /** Camera tilt while driving, in degrees. 0 = flat top-down view (default). */
+    val navTilt: Float = DEFAULT_NAV_TILT,
 ) {
     companion object {
         const val DEFAULT_ROUTING_URL = "https://valhalla1.openstreetmap.de"
         const val DEFAULT_GEOCODER_URL = "https://photon.komoot.io"
         const val DEFAULT_STYLE_DAY = "https://tiles.openfreemap.org/styles/positron"
         const val DEFAULT_STYLE_NIGHT = "https://tiles.openfreemap.org/styles/dark"
+        const val DEFAULT_NAV_ZOOM = 18.8f
+        const val MIN_NAV_ZOOM = 15.0f
+        const val MAX_NAV_ZOOM = 20.5f
+        const val DEFAULT_NAV_TILT = 0f
+        const val MAX_NAV_TILT = 60f
         const val MIN_ALERT_OPACITY = 0.20f
         const val MAX_ALERT_OPACITY = 0.70f
     }
@@ -79,6 +88,8 @@ class SettingsRepository(private val store: TextStore) {
 
         fun sanitize(s: AppSettings) = s.copy(
             alertOpacity = s.alertOpacity.coerceIn(AppSettings.MIN_ALERT_OPACITY, AppSettings.MAX_ALERT_OPACITY),
+            navZoom = s.navZoom.coerceIn(AppSettings.MIN_NAV_ZOOM, AppSettings.MAX_NAV_ZOOM),
+            navTilt = s.navTilt.coerceIn(0f, AppSettings.MAX_NAV_TILT),
             routingUrl = s.routingUrl.trim().takeIf(::isValidServerUrl) ?: AppSettings.DEFAULT_ROUTING_URL,
             geocoderUrl = s.geocoderUrl.trim().takeIf(::isValidServerUrl) ?: AppSettings.DEFAULT_GEOCODER_URL,
             styleDayUrl = s.styleDayUrl.trim().takeIf(::isValidServerUrl) ?: AppSettings.DEFAULT_STYLE_DAY,
@@ -115,6 +126,8 @@ class SettingsRepository(private val store: TextStore) {
             .put("geocoderUrl", s.geocoderUrl)
             .put("styleDay", s.styleDayUrl)
             .put("styleNight", s.styleNightUrl)
+            .put("navZoom", s.navZoom.toDouble())
+            .put("navTilt", s.navTilt.toDouble())
             .toString()
 
         fun decode(text: String): AppSettings = runCatching {
@@ -146,6 +159,8 @@ class SettingsRepository(private val store: TextStore) {
                     geocoderUrl = o.optString("geocoderUrl", d.geocoderUrl),
                     styleDayUrl = o.optString("styleDay", d.styleDayUrl),
                     styleNightUrl = o.optString("styleNight", d.styleNightUrl),
+                    navZoom = o.optDouble("navZoom", d.navZoom.toDouble()).toFloat(),
+                    navTilt = o.optDouble("navTilt", d.navTilt.toDouble()).toFloat(),
                 ),
             )
         }.getOrDefault(AppSettings())

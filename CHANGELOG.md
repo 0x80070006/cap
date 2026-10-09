@@ -5,6 +5,11 @@
 Première version publique (phases 0 et 1 du plan, plus une partie de la phase 2).
 
 ### Ajouté
+- Sélecteur de langue Français / English en haut des paramètres.
+- Choix du point de départ dans la prévisualisation (position actuelle par défaut).
+- Proposition de déviation en cours de trajet quand un ralentissement est détecté (allure observée + zone d'exclusion Valhalla), ETA corrigée.
+- Position précise : requêtes haute précision, filtrage des positions réseau, alertes « position approximative » et « GPS désactivé ».
+- Vue plate par défaut, zoom rapproché, zoom et inclinaison réglables avec retour par défaut, pincement mémorisé.
 - Carte MapLibre (OpenFreeMap), thèmes jour/nuit, eau bleue / espaces verts / bâtiments gris.
 - Position GNSS native, curseur bleu orienté, bouton de recalibrage (sens de marche / nord en haut).
 - Recherche Photon avec autocomplétion, catégories, historique ; coordonnées résolues localement.

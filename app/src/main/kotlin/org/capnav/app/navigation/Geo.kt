@@ -91,6 +91,35 @@ object Geo {
         return line.last()
     }
 
+    /**
+     * Closed corridor polygon of half-width [halfWidthM] around [line], built by offsetting each
+     * vertex perpendicular to the local direction (left side forward, right side backward).
+     */
+    fun corridor(line: List<GeoPoint>, halfWidthM: Double): List<GeoPoint> {
+        if (line.size < 2) return emptyList()
+        val left = ArrayList<GeoPoint>(line.size)
+        val right = ArrayList<GeoPoint>(line.size)
+        for (i in line.indices) {
+            val a = line[maxOf(0, i - 1)]
+            val b = line[minOf(line.lastIndex, i + 1)]
+            val heading = Math.toRadians(bearingDeg(a, b))
+            val dLat = halfWidthM / 110_574.0
+            val dLon = halfWidthM / (111_320.0 * cos(Math.toRadians(line[i].lat)))
+            // Left of heading h (clockwise from north) is (north, east) = (sin h, -cos h).
+            left += GeoPoint(line[i].lat + dLat * sin(heading), line[i].lon - dLon * cos(heading))
+            right += GeoPoint(line[i].lat - dLat * sin(heading), line[i].lon + dLon * cos(heading))
+        }
+        return left + right.reversed() + left.first()
+    }
+
+    /** Sub-polyline of [line] between [fromM] and [toM] metres along it, at most [maxPoints] vertices. */
+    fun slice(line: List<GeoPoint>, cumulative: DoubleArray, fromM: Double, toM: Double, maxPoints: Int = 40): List<GeoPoint> {
+        if (line.size < 2 || toM <= fromM) return emptyList()
+        val inner = line.indices.filter { cumulative[it] > fromM && cumulative[it] < toM }.map { line[it] }
+        val step = maxOf(1, inner.size / maxPoints)
+        return listOf(along(line, cumulative, fromM)) + inner.filterIndexed { i, _ -> i % step == 0 } + along(line, cumulative, toM)
+    }
+
     /** Decodes a Valhalla polyline (precision 6). */
     fun decodePolyline6(encoded: String): List<GeoPoint> {
         val out = ArrayList<GeoPoint>(encoded.length / 4)

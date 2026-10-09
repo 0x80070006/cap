@@ -47,6 +47,7 @@ import org.capnav.app.navigation.Fix
 import org.capnav.app.navigation.Geo
 import org.capnav.app.navigation.NavigationService
 import org.capnav.app.navigation.StopReason
+import org.capnav.app.navigation.TripEngine
 import org.capnav.app.navigation.TripEvent
 import org.capnav.app.navigation.TripState
 import org.capnav.app.navigation.activeTrip
@@ -58,6 +59,8 @@ import kotlin.math.max
 enum class Screen { MAP, SEARCH, MY_ALERTS, FAVORITES, SETTINGS, PRIVACY, ABOUT }
 
 data class UiMessage(val id: Long, val text: String, val actionLabel: String? = null, val action: (suspend () -> Unit)? = null)
+
+data class DetourProposal(val route: Route, val gainS: Double)
 
 data class CameraCommand(val point: GeoPoint, val zoom: Double, val bearing: Double = 0.0, val id: Long = System.nanoTime())
 
@@ -77,6 +80,18 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
     val fix: StateFlow<Fix?> = _fix.asStateFlow()
     private var locationJob: Job? = null
     var locationGranted by mutableStateOf(false); private set
+    /** False when the user granted only "approximate" location (Android 12+). */
+    var locationPrecise by mutableStateOf(true); private set
+    var gpsEnabled by mutableStateOf(true); private set
+
+    /** Start point chosen in the preview; null = current position (default). */
+    var customOrigin by mutableStateOf<Place?>(null); private set
+    var pickingOrigin by mutableStateOf(false)
+
+    /** Faster route proposed while driving because a slowdown was detected ahead. */
+    var detour by mutableStateOf<DetourProposal?>(null); private set
+    private var lastDetourCheckMs = 0L
+    private var detourIgnoredUntilMs = 0L
 
     var camera by mutableStateOf<CameraCommand?>(null); private set
     var followUser by mutableStateOf(true)
@@ -149,6 +164,7 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
                 val active = s.activeTrip != null
                 if (active && !wasActive) NavigationService.start(app)
                 if (!active) {
+                    detour = null
                     reminder = null
                     stopJob?.cancel()
                     stopCountdown = null
@@ -161,8 +177,10 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
 
     // ---------- Location ----------
 
-    fun onLocationPermission(granted: Boolean) {
+    fun onLocationPermission(granted: Boolean, precise: Boolean = granted, gpsOn: Boolean = true) {
         locationGranted = granted
+        locationPrecise = precise
+        gpsEnabled = gpsOn
         if (!granted || locationJob != null) return
         locationJob = viewModelScope.launch {
             trip.map { it.activeTrip != null }.distinctUntilChanged()
@@ -179,16 +197,31 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
                     } else if (raw.bearingDeg == null) raw.copy(bearingDeg = prev?.bearingDeg) else raw
                     val first = prev == null
                     _fix.value = f
-                    if (first) camera = CameraCommand(f.point, 17.0)
+                    if (first) camera = CameraCommand(f.point, browseZoom())
                     c.engine.onLocation(f)
                     checkReminders(f)
+                    maybeProposeDetour(f)
                 }
         }
     }
 
+    private fun browseZoom() = settings.value.navZoom - 1.0
+
     fun recenter() {
         followUser = true
-        _fix.value?.let { camera = CameraCommand(it.point, if (trip.value.activeTrip != null) 18.3 else 17.0, currentBearing(it)) }
+        _fix.value?.let {
+            val zoom = if (trip.value.activeTrip != null) settings.value.navZoom.toDouble() else browseZoom()
+            camera = CameraCommand(it.point, zoom, currentBearing(it))
+        }
+    }
+
+    /** A pinch while driving becomes the new preferred navigation zoom, and following resumes. */
+    fun onUserZoom(zoom: Double) {
+        if (trip.value.activeTrip == null) return
+        val speed = _fix.value?.speedMps ?: 0f
+        val base = (zoom + org.capnav.app.ui.map.MapController.speedZoomOffset(speed)).toFloat()
+        updateSettings { it.copy(navZoom = base) }
+        followUser = true
     }
 
     /** Recalibrate: re-centre and turn the map so the direction of travel points up. */
@@ -237,6 +270,7 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
     fun openSearch(forStop: Boolean = false) {
         pickingStop = forStop
         pickingFavorite = false
+        pickingOrigin = false
         query = ""
         results = emptyList()
         screen = Screen.SEARCH
@@ -244,7 +278,10 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
 
     fun pick(place: Place) {
         screen = Screen.MAP
-        if (pickingFavorite) {
+        if (pickingOrigin) {
+            pickingOrigin = false
+            setOrigin(place)
+        } else if (pickingFavorite) {
             pickingFavorite = false
             screen = Screen.FAVORITES
             openFavoriteEditor(place)
@@ -266,7 +303,27 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
         )
     }
 
+    fun openSearchForOrigin() {
+        openSearch()
+        pickingOrigin = true
+    }
+
+    /** Changes the start point of the previewed route; null goes back to the current position. */
+    fun setOrigin(place: Place?) {
+        val s = trip.value as? TripState.Previewing ?: return
+        val origin = place?.point ?: _fix.value?.point ?: return toast(R.string.no_position)
+        customOrigin = place
+        viewModelScope.launch {
+            computingRoute = true
+            val r = c.routing.computeRoutes(RouteRequest(origin, s.waypoints, s.options, Locale.getDefault().toLanguageTag()))
+            computingRoute = false
+            r.onSuccess { routes -> if (routes.isNotEmpty()) c.engine.preview(routes, origin, s.waypoints, s.options) }
+                .onFailure { toast(R.string.route_error) }
+        }
+    }
+
     fun routeTo(place: Place) {
+        customOrigin = null
         val origin = _fix.value?.point ?: return toast(R.string.no_position)
         val wp = Waypoint(nextWaypointId++, place)
         val options = settings.value.routeOptions
@@ -296,8 +353,15 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
     }
 
     fun selectRoute(i: Int) = viewModelScope.launch { c.engine.select(i) }
-    fun cancelPreview() = viewModelScope.launch { c.engine.cancelPreview() }
+    fun cancelPreview() = viewModelScope.launch {
+        customOrigin = null
+        c.engine.cancelPreview()
+    }
+
     fun startTrip() = viewModelScope.launch {
+        customOrigin = null
+        detour = null
+        detourIgnoredUntilMs = 0L
         followUser = true
         c.engine.start()
         recenter()
@@ -423,6 +487,51 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
             is TripEvent.RerouteFailed -> toast(R.string.reroute_failed)
             TripEvent.Arrived -> c.voice.speak(app.getString(R.string.voice_arrived))
         }
+    }
+
+    // ---------- Proactive detour (jam ahead) ----------
+
+    /**
+     * When the observed pace shows a slowdown ahead, ask for a route that avoids the next stretch of
+     * the current one, and offer it only if it is clearly faster (> 2 min and > 8 %). Never imposed.
+     */
+    private fun maybeProposeDetour(f: Fix) {
+        val nav = trip.value as? TripState.Navigating ?: return
+        val p = nav.trip.progress
+        val now = System.currentTimeMillis()
+        if (detour != null || p.delayS < TripEngine.DETOUR_MIN_GAIN_S || now < detourIgnoredUntilMs) return
+        if (now - lastDetourCheckMs < DETOUR_CHECK_INTERVAL_MS) return
+        lastDetourCheckMs = now
+        val route = nav.trip.route
+        val cum = Geo.cumulative(route.shape)
+        val here = cum[p.segmentIndex.coerceIn(0, cum.lastIndex)]
+        val stretch = Geo.slice(route.shape, cum, here + 150.0, (here + 2_500.0).coerceAtMost(cum.last() - 200.0))
+        if (stretch.size < 2) return
+        val req = RouteRequest(
+            f.point, nav.trip.remainingWaypoints, nav.trip.options, Locale.getDefault().toLanguageTag(),
+            excludePolygons = listOf(Geo.corridor(stretch, 25.0)),
+        )
+        viewModelScope.launch {
+            val candidate = c.routing.computeRoutes(req).getOrNull()?.firstOrNull() ?: return@launch
+            val current = (trip.value as? TripState.Navigating)?.trip?.progress?.etaS ?: return@launch
+            if (!TripEngine.worthSwitching(current, candidate.durationS)) return@launch
+            val gain = current - candidate.durationS
+            detour = DetourProposal(candidate, gain)
+            c.voice.speak(app.getString(R.string.voice_detour, ((gain + 30) / 60).toInt()))
+            delay(DETOUR_VISIBLE_MS)
+            if (detour?.route === candidate) detour = null
+        }
+    }
+
+    fun acceptDetour() {
+        val d = detour ?: return
+        detour = null
+        viewModelScope.launch { c.engine.acceptAlternative(d.route) }
+    }
+
+    fun ignoreDetour() {
+        detour = null
+        detourIgnoredUntilMs = System.currentTimeMillis() + DETOUR_IGNORE_MS
     }
 
     // ---------- Personal alerts ----------
@@ -676,5 +785,8 @@ class CapViewModel(private val c: AppContainer, private val app: Application) : 
         const val REMINDER_SECONDS = 12f
         const val REMINDER_VISIBLE_MS = 12_000L
         const val MAX_IMPORT = 8 shl 20
+        const val DETOUR_CHECK_INTERVAL_MS = 90_000L
+        const val DETOUR_VISIBLE_MS = 30_000L
+        const val DETOUR_IGNORE_MS = 5 * 60_000L
     }
 }

@@ -59,6 +59,11 @@ class TripEngine(
     private var lastPeriodicSaveMs = 0L
     private var lastRerouteFailureMs = 0L
     private var generation = 0L
+    private val pace = ArrayDeque<PaceSample>()
+    private var lastTrackedMs = 0L
+
+    /** One map-matched step: how long it really took vs how long the route model expected. */
+    private data class PaceSample(val atMs: Long, val actualS: Double, val expectedS: Double)
 
     suspend fun restore() = mutex.withLock {
         val restored = when (val s = store.load()) {
@@ -92,6 +97,7 @@ class TripEngine(
         val route = s.selectedRoute
         val trip = ActiveTrip(route, s.waypoints, s.options, Progress.initial(route), clock(), route.durationS, 0.0)
         resetTracking()
+        lastFix = null
         set(TripState.Navigating(trip))
         route.maneuvers.firstOrNull()?.let { m -> emit(TripEvent.Announce(m.verbalPre ?: m.instruction)) }
     }
@@ -279,15 +285,17 @@ class TripEngine(
         for (i in next until maneuvers.size) remainingS += maneuvers[i].timeS
         val leg = route.legEnds.indexOfFirst { it > seg }.let { if (it == -1) route.legEnds.lastIndex else it }
 
+        val remainingM = max(0.0, total - along)
         val newProgress = Progress(
             matched = proj.point,
             segmentIndex = seg,
             maneuverIndex = next,
             distanceToManeuverM = distToManeuver,
-            remainingM = max(0.0, total - along),
+            remainingM = remainingM,
             remainingS = remainingS,
             legIndex = max(leg, p.legIndex),
             speedMps = fix.speedMps,
+            delayS = observedDelay(fix.timeMs, p.remainingS - remainingS, remainingS, remainingM),
         )
         if (newProgress.legIndex > p.legIndex) {
             for (i in p.legIndex until newProgress.legIndex) trip.waypoints.getOrNull(i)?.let {
@@ -296,6 +304,33 @@ class TripEngine(
         }
         announce(maneuvers[next], next, distToManeuver, fix.speedMps)
         return trip.copy(progress = newProgress)
+    }
+
+    /**
+     * ETA correction from observed pace (prompt §10): over the last 5 minutes, compare the time it
+     * really took to progress with what the route model expected. A slowdown factor > 1 is applied
+     * to the next 3 km only, where a jam is most likely to persist.
+     */
+    private fun observedDelay(nowMs: Long, expectedStepS: Double, remainingS: Double, remainingM: Double): Double {
+        if (lastTrackedMs > 0 && nowMs > lastTrackedMs) {
+            val actual = ((nowMs - lastTrackedMs) / 1000.0).coerceAtMost(30.0)
+            pace.addLast(PaceSample(nowMs, actual, expectedStepS.coerceAtLeast(0.0)))
+        }
+        lastTrackedMs = nowMs
+        while (pace.isNotEmpty() && nowMs - pace.first().atMs > PACE_WINDOW_MS) pace.removeFirst()
+        val actual = pace.sumOf { it.actualS }
+        if (actual < PACE_MIN_OBSERVED_S) return 0.0
+        val slowdown = (actual / pace.sumOf { it.expectedS }.coerceAtLeast(1.0)).coerceIn(1.0, MAX_SLOWDOWN)
+        val nextStretchS = if (remainingM <= 0) 0.0 else remainingS * (JAM_STRETCH_M / remainingM).coerceAtMost(1.0)
+        return (slowdown - 1.0) * nextStretchS
+    }
+
+    /** Switches to a faster route the user accepted (proactive detour). */
+    suspend fun acceptAlternative(route: Route) = mutex.withLock {
+        val s = _state.value as? TripState.Navigating ?: return@withLock
+        resetTracking()
+        set(TripState.Navigating(s.trip.copy(route = route, waypoints = s.trip.remainingWaypoints, progress = Progress.initial(route))))
+        emit(TripEvent.Rerouted)
     }
 
     private fun announce(m: org.capnav.app.model.Maneuver, index: Int, dist: Double, speed: Float) {
@@ -343,6 +378,8 @@ class TripEngine(
         offRouteCount = 0
         announced.clear()
         cumulativeFor = null
+        pace.clear()
+        lastTrackedMs = 0L
     }
 
     private fun emit(e: TripEvent) {
@@ -369,5 +406,17 @@ class TripEngine(
         const val ARRIVAL_REMAINING_M = 20.0
         const val PERIODIC_SAVE_MS = 15_000L
         const val REROUTE_RETRY_MS = 20_000L
+        const val PACE_WINDOW_MS = 5 * 60_000L
+        const val PACE_MIN_OBSERVED_S = 90.0
+        const val MAX_SLOWDOWN = 6.0
+        const val JAM_STRETCH_M = 3_000.0
+        const val DETOUR_MIN_GAIN_S = 120.0
+        const val DETOUR_MIN_GAIN_RATIO = 0.08
+
+        /** Proactive reroute only when clearly worth it: > 2 min AND > 8 % (prompt §10). */
+        fun worthSwitching(currentEtaS: Double, candidateS: Double): Boolean {
+            val gain = currentEtaS - candidateS
+            return gain > DETOUR_MIN_GAIN_S && gain / currentEtaS.coerceAtLeast(1.0) > DETOUR_MIN_GAIN_RATIO
+        }
     }
 }

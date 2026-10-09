@@ -32,6 +32,8 @@ data class RouteRequest(
     val waypoints: List<Waypoint>,
     val options: RouteOptions,
     val language: String,
+    /** Areas the route must avoid (closed rings), e.g. a jammed stretch ahead. */
+    val excludePolygons: List<List<GeoPoint>> = emptyList(),
 )
 
 /** Simplified Valhalla maneuver types we draw distinct arrows for. */

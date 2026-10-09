@@ -32,5 +32,11 @@ Clé dans `~/.cap-signing/` (ou chemin `CAP_SIGNING_PROPERTIES`), jamais version
 ## ADR-010 — Serveurs publics de démonstration par défaut
 Pour que l'APK soit utilisable immédiatement. Ils sont signalés comme tels à l'accueil et dans Paramètres, remplaçables, et chaque requête est visible dans le journal Vie privée. La production passe par l'auto-hébergement (R-20).
 
+## ADR-012 — Bouchons détectés par l'allure observée
+Sans flux de trafic ouvert branché (phase 4), la seule information fiable et privée est la propre allure du conducteur. Sur une fenêtre de 5 min, le moteur compare le temps réellement mis à progresser au temps prévu par l'itinéraire ; le facteur de ralentissement est appliqué aux 3 km suivants (`Progress.delayS`). Au-delà de 2 min de retard, l'app demande à Valhalla un itinéraire excluant (`exclude_polygons`) un corridor de 25 m autour des 2,5 km suivants, et ne le propose que s'il fait gagner > 2 min et > 8 %. Proposé, jamais imposé ; ignoré = silence 5 min. Aucune donnée supplémentaire ne quitte l'appareil par rapport à un recalcul classique.
+
+## ADR-013 — Langue de l'application
+Android 13+ : API système de langue par application (`LocaleManager`). Versions antérieures : préférence non sensible appliquée dans `attachBaseContext`, puis redémarrage (le trajet persisté reprend en pause). Évite d'ajouter AppCompat.
+
 ## ADR-011 — Palette : demandes explicites du propriétaire
 À la demande du propriétaire du projet : itinéraire actif en violet (`brand.purple`, liseré `#5B2DB8`), curseur de position en bleu (`brand.blue`), eau bleue, espaces verts verts, bâtiments gris. La palette sémantique trafic reste disjointe de ces couleurs.

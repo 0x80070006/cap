@@ -1,7 +1,10 @@
 package org.capnav.app
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import org.capnav.app.ui.settings.AppLanguage
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,7 +26,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private val permissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { vm.onLocationPermission(hasLocation()) }
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { reportLocationState() }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLanguage.wrap(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -33,11 +40,19 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        vm.onLocationPermission(hasLocation())
+        reportLocationState()
     }
 
-    private fun hasLocation() =
-        ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    private fun granted(p: String) = ContextCompat.checkSelfPermission(this, p) == PackageManager.PERMISSION_GRANTED
+
+    /** Precise = FINE granted; Android 12+ lets users grant only COARSE ("approximate"). */
+    private fun hasLocation() = granted(Manifest.permission.ACCESS_FINE_LOCATION)
+
+    private fun reportLocationState() {
+        val coarse = granted(Manifest.permission.ACCESS_COARSE_LOCATION)
+        val gps = getSystemService(LocationManager::class.java)?.isProviderEnabled(LocationManager.GPS_PROVIDER) ?: false
+        vm.onLocationPermission(granted = hasLocation() || coarse, precise = hasLocation(), gpsOn = gps)
+    }
 
     /** Asked at the moment of use (after onboarding), never at install time. */
     private fun requestPermissionsIfNeeded() {
@@ -50,6 +65,6 @@ class MainActivity : ComponentActivity() {
                 ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
             ) add(Manifest.permission.POST_NOTIFICATIONS)
         }
-        if (wanted.isEmpty()) vm.onLocationPermission(true) else permissionLauncher.launch(wanted.toTypedArray())
+        if (wanted.isEmpty()) reportLocationState() else permissionLauncher.launch(wanted.toTypedArray())
     }
 }

@@ -50,6 +50,7 @@ class MapController(private val map: MapLibreMap) {
     var onLongPress: (GeoPoint) -> Unit = {}
     var onUserGesture: () -> Unit = {}
     var onBearingChange: (Double) -> Unit = {}
+    var onUserZoom: (Double) -> Unit = {}
     private var dark = false
 
     init {
@@ -68,6 +69,16 @@ class MapController(private val map: MapLibreMap) {
             override fun onRotateBegin(detector: org.maplibre.android.gestures.RotateGestureDetector) = onUserGesture()
             override fun onRotate(detector: org.maplibre.android.gestures.RotateGestureDetector) = Unit
             override fun onRotateEnd(detector: org.maplibre.android.gestures.RotateGestureDetector) = Unit
+        })
+        map.addOnScaleListener(object : MapLibreMap.OnScaleListener {
+            override fun onScaleBegin(detector: org.maplibre.android.gestures.StandardScaleGestureDetector) {
+                scaling = true
+            }
+            override fun onScale(detector: org.maplibre.android.gestures.StandardScaleGestureDetector) = Unit
+            override fun onScaleEnd(detector: org.maplibre.android.gestures.StandardScaleGestureDetector) {
+                scaling = false
+                onUserZoom(map.cameraPosition.zoom)
+            }
         })
         map.addOnMoveListener(object : MapLibreMap.OnMoveListener {
             override fun onMoveBegin(detector: org.maplibre.android.gestures.MoveGestureDetector) = onUserGesture()
@@ -315,33 +326,33 @@ class MapController(private val map: MapLibreMap) {
         else map.animateCamera(CameraUpdateFactory.newCameraPosition(pos), 700)
     }
 
-    /** Browsing camera: keeps the user centred, optionally heading-up, without changing the zoom. */
+    /** True while the user pinches; camera following pauses so the gesture is not fought. */
+    var scaling = false
+        private set
+
+    /** Browsing camera: keeps the user centred, optionally heading-up, keeping the user's zoom. */
     fun followBrowse(f: Fix, headingUp: Boolean) {
+        if (scaling) return
         val pos = CameraPosition.Builder()
             .target(LatLng(f.point.lat, f.point.lon))
             .bearing(if (headingUp) (f.bearingDeg ?: map.cameraPosition.bearing.toFloat()).toDouble() else 0.0)
-            .zoom(map.cameraPosition.zoom.coerceAtLeast(16.5))
             .tilt(0.0)
             .build()
         map.animateCamera(CameraUpdateFactory.newCameraPosition(pos), 700)
     }
 
-    /** Driving camera: heading-up, tilted, user placed in the lower third, zoom from speed. */
-    fun follow(f: Fix, headingUp: Boolean, viewHeightPx: Int) {
-        val kmh = f.speedMps * 3.6
-        // Close-up view centred on the cursor; zooms out only progressively at higher speeds.
-        val zoom = when {
-            kmh > 100 -> 16.4
-            kmh > 60 -> 17.1
-            kmh > 30 -> 17.7
-            else -> 18.3
-        }
+    /**
+     * Driving camera: user zoom at low speed, zooming out progressively with speed; flat top-down by
+     * default, optional tilt toward the direction of travel; cursor slightly below the centre.
+     */
+    fun follow(f: Fix, headingUp: Boolean, viewHeightPx: Int, baseZoom: Double, tiltDeg: Double) {
+        if (scaling) return
         val pos = CameraPosition.Builder()
             .target(LatLng(f.point.lat, f.point.lon))
-            .zoom(zoom)
-            .tilt(if (headingUp) 45.0 else 0.0)
+            .zoom((baseZoom - speedZoomOffset(f.speedMps)).coerceIn(13.0, 21.0))
+            .tilt(if (headingUp) tiltDeg else 0.0)
             .bearing(if (headingUp) (f.bearingDeg ?: map.cameraPosition.bearing.toFloat()).toDouble() else 0.0)
-            .padding(0.0, viewHeightPx * 0.25, 0.0, 0.0)
+            .padding(0.0, viewHeightPx * (if (tiltDeg > 10) 0.3 else 0.2), 0.0, 0.0)
             .build()
         map.animateCamera(CameraUpdateFactory.newCameraPosition(pos), 900)
     }
@@ -389,6 +400,16 @@ class MapController(private val map: MapLibreMap) {
         private const val CURSOR = "cap-cursor"
 
         fun iconName(t: AlertType) = "alert-${t.name}"
+
+        fun speedZoomOffset(speedMps: Float): Double {
+            val kmh = speedMps * 3.6
+            return when {
+                kmh > 100 -> 2.0
+                kmh > 60 -> 1.3
+                kmh > 30 -> 0.6
+                else -> 0.0
+            }
+        }
 
         /** Arrow-head cursor (brand blue, deep-blue outline for contrast on light maps), pointing up = north before rotation. */
         private fun cursorBitmap(): Bitmap {

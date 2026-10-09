@@ -352,4 +352,23 @@
     <string name="other">Other</string>
     <string name="edit">Edit</string>
     <string name="manage_favorites">Favourites</string>
+    <string name="map_view">Map view</string>
+    <string name="nav_zoom">Navigation zoom: %1$s</string>
+    <string name="nav_tilt">Tilt toward the direction of travel: %1$d°</string>
+    <string name="nav_tilt_flat">Tilt: flat, seen from above</string>
+    <string name="map_view_hint">The map zooms out a little at higher speeds. Pinching the map while driving also sets the zoom.</string>
+    <string name="reset_default">Default</string>
+    <string name="location_approximate">Approximate location only: allow "precise location" for accurate guidance.</string>
+    <string name="gps_off">Location (GPS) is turned off on this phone.</string>
+    <string name="fix_it">Fix</string>
+    <string name="start_point">Start point</string>
+    <string name="my_position">My position</string>
+    <string name="change">Change</string>
+    <string name="custom_origin_hint">Planning from another start point. Once started, guidance always follows your real position.</string>
+    <string name="detour_title">Slowdown ahead: faster route, %1$d min saved</string>
+    <string name="detour_hint">Based on your observed speed (live traffic is not available on this server).</string>
+    <string name="take_detour">Take it</string>
+    <string name="ignore">Ignore</string>
+    <string name="voice_detour">Slowdown ahead. A faster route saves %1$d minutes.</string>
+    <string name="language">Language / Langue</string>
 </resources>
