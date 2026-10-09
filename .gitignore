@@ -11,3 +11,4 @@ captures/
 *.jks
 *.keystore
 signing.properties
+dist/
